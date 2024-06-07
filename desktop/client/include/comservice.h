@@ -3,8 +3,9 @@
 
 #include "setting.h"
 
-#include <cstdint>
 #include <atomic>
+#include <cstdint>
+#include <iostream>
 
 class COMService
 {
@@ -13,18 +14,20 @@ private:
 
     virtual void run(void) = 0;
 
-    void extract(int start, int length, int &value);
+    void extract(int start, int length, uint32_t &value);
 
 public:
     uint32_t extractSpeed();
-    uint32_t extractTemperature();
+    int32_t extractTemperature();
     uint32_t extractBatteryLevel();
 
     bool leftLightStatus();
     bool rightLightStatus();
-    bool communicationStatus();
+    bool warningLightStatus();
 
-    uint8_t recieveBuffer();
+    virtual uint8_t recieveBuffer() = 0;
+
+    virtual bool isConnected() const = 0;
 };
 
 #endif

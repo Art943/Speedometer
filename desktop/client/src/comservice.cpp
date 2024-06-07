@@ -4,17 +4,16 @@ void COMService::extract(int start, int length, uint32_t &value)
 {
     uint32_t mask{0};
 
-    for (size_t i = 0; i < start; i++)
+    value = 0;
+
+    for (size_t i = 0; i < length; i++)
     {
-        mask << 1;
+        mask = (mask << 1) | 1;
     }
 
-    for (size_t i = 0; i < length; i++, mask << 1)
-    {
-        mask = mask | 1;
-    }
+    mask <<= start;
 
-    value = value & mask;
+    // Mask Complete!
 }
 
 uint32_t COMService::extractSpeed()
@@ -24,10 +23,16 @@ uint32_t COMService::extractSpeed()
     return speed;
 }
 
-uint32_t COMService::extractTemperature()
+int32_t COMService::extractTemperature()
 {
     uint32_t temperature{0};
     extract(Setting::Signal::Temperature::Start, Setting::Signal::Temperature::Length, temperature);
+
+    if (is_negative(temperature, Setting::Signal::Temperature::Length))
+    {
+        return convert_to_negative(temperature, Setting::Signal::Temperature::Length);
+    }
+
     return temperature;
 }
 
@@ -59,13 +64,25 @@ bool COMService::warningLightStatus()
     return warningLight;
 }
 
-bool COMService::communicationStatus()
-{
-    bool comStatus{false};
-
-    return comStatus;
-}
-
 uint8_t COMService::recieveBuffer()
 {
+}
+
+/* Helper Functions */
+
+bool is_negative(uint32_t num, size_t len)
+{
+    return (num & (1 << (len - 1))) != 0;
+}
+
+int32_t convert_to_negative(uint32_t num, size_t len)
+{
+    uint32_t mask = 0;
+
+    for (size_t i = 0; i < len; i++)
+    {
+        mask |= (1 << i);
+    }
+
+    return -(((~num) + 1) & mask);
 }
