@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QDialog>
 #include <QGridLayout>
-#include <QFontDatabase>
+#include <QFont>
 #include <QLabel>
 #include <QDebug>
 
@@ -12,29 +12,6 @@ public:
     {
         // Create a grid layout
         QGridLayout *layout = new QGridLayout(this);
-
-        // Load the font
-        int fontId = QFontDatabase::addApplicationFont(":/res/font.ttf");
-        if (fontId == -1)
-        {
-            qWarning() << "Failed to load the font file!";
-        }
-        else
-        {
-            QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
-            if (!fontFamilies.isEmpty())
-            {
-                QString fontFamily = fontFamilies.at(0); // Use the first family
-
-                // Create a label and set the custom font
-                QLabel *label = new QLabel("This text uses the custom font.");
-                QFont customFont(fontFamily);
-                label->setFont(customFont);
-
-                // Add the label to the layout
-                layout->addWidget(label, 0, 0);
-            }
-        }
 
         // Set a fixed size for the window
         const int fixedWidth = 600;

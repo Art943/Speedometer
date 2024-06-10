@@ -10,9 +10,12 @@ public:
     {
         // Create a grid layout
         QGridLayout *layout = new QGridLayout(this);
-        Qlabel label;
 
-        // Load the font
+        QString materialIconsFontFamily = "Material Icons";
+
+        // Create a QFont object using the Material Icons font
+        QFont materialIconsFont(materialIconsFontFamily);
+        materialIconsFont.setPointSize(48);
 
         // Set a fixed size for the window
         const int fixedWidth = 600;
@@ -22,9 +25,13 @@ public:
 
         // Set the background color
         setStyleSheet("background-color: rgb(64, 32, 60);");
-        QFont sansFont("0xebdc", 12);
-        label->sansFont("0xebdc", 12);
-        layout->addWidget(label, 0, 1);
+        // QFont sansFont("0xebdc", 12);
+        QLabel *label = new QLabel(QChar(0xe9e4)); // Specific icon character
+        label->setFont(materialIconsFont);
+        label->setAlignment(Qt::AlignCenter);
+
+        // Add the label to the layout
+        layout->addWidget(label, 0, 0);
     }
 };
 
