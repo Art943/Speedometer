@@ -9,6 +9,11 @@ add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 
+if(CMAKE_HOST_SYSTEM MATCHES Linux)
+   execute_process(COMMAND if [ ! -d ~/.local/share/fonts/ ]; then mkdir -p ~/.fonts; fi) //~/.local/share/fonts/
+   execute_process(COMMAND cp ./desktop/client/res/font.ttf ~/.local/share/fonts/materialicons.ttf)
+endif()
+
 add_executable(client desktop/client/main.cpp)
 add_executable(server desktop/server/main.cpp)
 target_link_libraries(client PUBLIC Qt6::Core Qt6::Widgets)
