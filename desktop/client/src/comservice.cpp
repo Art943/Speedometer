@@ -8,7 +8,7 @@ void COMService::extract(int start, int length, uint32_t &value)
 
     for (size_t i = 0; i < length; i++)
     {
-        mask = (mask << 1) | 1;
+        mask |= (1 << i);
     }
 
     mask <<= start;
