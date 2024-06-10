@@ -7,6 +7,7 @@ TARGET = testfold
 INCLUDEPATH += .
 
 QT += widgets
+QT += gui
 
 # Input
 SOURCES += main.cpp

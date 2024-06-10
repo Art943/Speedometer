@@ -1,9 +1,8 @@
 #include <QApplication>
 #include <QDialog>
 #include <QGridLayout>
-#include <QFontDatabase>
+#include <QFont>
 #include <QLabel>
-#include <QDebug>
 class Window : public QDialog
 {
 public:
@@ -11,6 +10,7 @@ public:
     {
         // Create a grid layout
         QGridLayout *layout = new QGridLayout(this);
+        Qlabel label;
 
         // Load the font
 
@@ -22,18 +22,9 @@ public:
 
         // Set the background color
         setStyleSheet("background-color: rgb(64, 32, 60);");
-        int fontId = QFontDatabase::addApplicationFont(":/res/font.ttf");
-
-        QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
-        QString materialIconsFontFamily = fontFamilies.at(0);
-        QWidget window;
-        // Create a label and set the icon
-        QLabel *iconLabel = new QLabel(&window);
-        QFont iconFont(materialIconsFontFamily);
-        iconFont.setPointSize(48); // Set the desired font size
-        iconLabel->setFont(iconFont);
-        iconLabel->setText(QChar(0xebdc)); // Unicode for the desired icon
-        layout->addWidget(iconLabel);
+        QFont sansFont("0xebdc", 12);
+        label->sansFont("0xebdc", 12);
+        layout->addWidget(label, 0, 1);
     }
 };
 
