@@ -14,8 +14,8 @@ if(CMAKE_HOST_SYSTEM MATCHES Linux)
 endif()
 
 # if (CMAKE_HOST_SYSTEM MATCHES Linux)
-#    if (NOT EXIST)
-#    execute_process(COMMAND )
+#    if (NOT EXIST "~/local/share/fonts/Materialicons.ttf")
+#    execute_process(COMMAND mkdir -p ~/local/share/fonts/ && cp ./desktop/client/res/font.ttf ~/local/share/fonts/Materialicons.ttf)
 # endif()
 
 add_executable(client desktop/client/main.cpp)
