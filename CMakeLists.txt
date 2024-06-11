@@ -10,12 +10,12 @@ add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 
 # if(CMAKE_HOST_SYSTEM MATCHES Linux)
-#    execute_process(COMMAND bash -c "if [ ! -f $ENV{HOME}/.local/share/fonts/Materialicons.ttf ]; then mkdir -p $ENV{HOME}/.local/share/fonts/ && cp ./desktop/client/res/font.ttf $ENV{HOME}/.local/share/fonts/Materialicons.ttf; fi")
+#    execute_process(COMMAND bash -c "if [ ! -f $ENV{HOME}/.local/share/fonts/MaterialIcons.ttf ]; then mkdir -p $ENV{HOME}/.local/share/fonts/ && cp ./desktop/client/res/font.ttf $ENV{HOME}/.local/share/fonts/MaterialIcons.ttf; fi")
 # endif()
 
 if (CMAKE_HOST_SYSTEM MATCHES Linux)
    if (NOT EXISTS "$ENV{HOME}/.local/share/fonts/MaterialIcons.ttf")
-      file(COPY "desktop/client/res/MaterialIcons.ttf" DESTINATION "$ENV{HOME}/.local/share/fonts/MaterialIcons.ttf")
+      file(COPY "desktop/client/res/MaterialIcons.ttf" DESTINATION "$ENV{HOME}/.local/share/fonts/")
    endif()
 endif()
 
