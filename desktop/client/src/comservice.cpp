@@ -16,17 +16,24 @@ void COMService::extract(int start, int length, uint32_t &value)
     // Mask Complete!
 }
 
-uint32_t COMService::extractSpeed()
+uint32_t COMService::getSpeed()
 {
     uint32_t speed{0};
+
+    mtx.lock();
     extract(Setting::Signal::Speed::Start, Setting::Signal::Speed::Length, speed);
+    mtx.unlock();
+
     return speed;
 }
 
-int32_t COMService::extractTemperature()
+int32_t COMService::getTemperature()
 {
     uint32_t temperature{0};
+
+    mtx.lock();
     extract(Setting::Signal::Temperature::Start, Setting::Signal::Temperature::Length, temperature);
+    mtx.unlock();
 
     if (is_negative(temperature, Setting::Signal::Temperature::Length))
     {
@@ -36,36 +43,48 @@ int32_t COMService::extractTemperature()
     return temperature;
 }
 
-uint32_t COMService::extractBatteryLevel()
+uint32_t COMService::getBatteryLevel()
 {
     uint32_t batteryLevel{0};
+
+    mtx.lock();
     extract(Setting::Signal::BatteryLevel::Start, Setting::Signal::BatteryLevel::Length, batteryLevel);
+    mtx.unlock();
+
     return batteryLevel;
 }
 
 bool COMService::leftLightStatus()
 {
     uint32_t leftLight{0};
+
+    mtx.lock();
     extract(Setting::Signal::LeftLight::Start, Setting::Signal::LeftLight::Length, leftLight);
+    mtx.unlock();
+
     return leftLight;
 }
 
 bool COMService::rightLightStatus()
 {
     uint32_t rightLight{0};
+
+    mtx.lock();
     extract(Setting::Signal::RightLight::Start, Setting::Signal::RightLight::Length, rightLight);
+    mtx.unlock();
+
     return rightLight;
 }
 
 bool COMService::warningLightStatus()
 {
     uint32_t warningLight{0};
-    extract(Setting::Signal::WarningLight::Start, Setting::Signal::WarningLight::Length, warningLight);
-    return warningLight;
-}
 
-uint8_t COMService::recieveBuffer()
-{
+    mtx.lock();
+    extract(Setting::Signal::WarningLight::Start, Setting::Signal::WarningLight::Length, warningLight);
+    mtx.unlock();
+
+    return warningLight;
 }
 
 /* Helper Functions */
