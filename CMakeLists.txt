@@ -16,6 +16,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 if (CMAKE_HOST_SYSTEM MATCHES Linux)
    if (NOT EXISTS "$ENV{HOME}/.local/share/fonts/MaterialIcons.ttf")
       file(COPY "desktop/client/res/MaterialIcons.ttf" DESTINATION "$ENV{HOME}/.local/share/fonts/")
+      execute_process(COMMAND fc-cache -f -v ~/.local/share/fonts)
    endif()
 endif()
 
