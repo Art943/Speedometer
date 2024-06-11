@@ -4,25 +4,27 @@
 #include "setting.h"
 
 #include <atomic>
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 #include <mutex>
 
 class COMService
 {
 private:
-    void extract(int start, int length, uint32_t &value);
+    void extract(int start, int length);
 
 protected:
     uint8_t buffer[Setting::Signal::BUFFER_LENGTH];
+    std::atomic<bool> status{false};
     std::mutex mtx;
-    std::atomic<bool> connected;
 
     virtual void run(void) = 0;
 
 public:
     // Virtual destructor to ensure proper cleanup of derived classes
-    virtual ~COMService() {}
+    virtual ~COMService() = default;
+
+    bool connected(void) { return status; }
 
     uint32_t getSpeed();
     int32_t getTemperature();
