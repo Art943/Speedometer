@@ -2,8 +2,13 @@
 
 void COMService::extract(int start, int length, uint32_t &value)
 {
+    if (start < 0 || length <= 0 || (start + length) > (Setting::Signal::BUFFER_LENGTH * 8))
+    {
+        throw std::out_of_range("Invalid start bit or length");
+    }
+
     value = 0;
-    uint8_t byte = start / 8;
+    uint8_t byteIndex = start / 8;
     uint8_t bitOffset = start % 8;
 
     uint8_t extractedBits = 0;
@@ -14,13 +19,13 @@ void COMService::extract(int start, int length, uint32_t &value)
         uint8_t bitsToExtract = (bitsLeftInByte < (length - extractedBits)) ? bitsLeftInByte : (length - extractedBits);
 
         uint8_t mask = ((1 << bitsToExtract) - 1) << bitOffset;
-        uint8_t extractedBits = (buffer[byte] & mask) >> bitOffset;
+        uint8_t extractedBits = (buffer[byteIndex] & mask) >> bitOffset;
 
         value |= static_cast<uint32_t>(extractedBits) << extractedBits;
 
         extractedBits += bitsToExtract;
         bitOffset = 0;
-        byte++;
+        byteIndex++;
     }
 }
 
