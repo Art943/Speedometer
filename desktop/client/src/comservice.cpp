@@ -2,18 +2,26 @@
 
 void COMService::extract(int start, int length, uint32_t &value)
 {
-    uint32_t mask{0};
-
     value = 0;
+    uint8_t byte = start / 8;
+    uint8_t bitOffset = start % 8;
 
-    for (size_t i = 0; i < length; i++)
+    uint8_t extractedBits = 0;
+
+    while (extractedBits < length)
     {
-        mask |= (1 << i);
+        uint8_t bitsLeftInByte = 8 - bitOffset;
+        uint8_t bitsToExtract = (bitsLeftInByte < (length - extractedBits)) ? bitsLeftInByte : (length - extractedBits);
+
+        uint8_t mask = ((1 << bitsToExtract) - 1) << bitOffset;
+        uint8_t extractedBits = (buffer[byte] & mask) >> bitOffset;
+
+        value |= static_cast<uint32_t>(extractedBits) << extractedBits;
+
+        extractedBits += bitsToExtract;
+        bitOffset = 0;
+        byte++;
     }
-
-    mask <<= start;
-
-    // Mask Complete!
 }
 
 uint32_t COMService::getSpeed()
