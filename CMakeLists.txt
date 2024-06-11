@@ -15,14 +15,19 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 
 if (CMAKE_HOST_SYSTEM MATCHES Linux)
    if (NOT EXISTS "$ENV{HOME}/.local/share/fonts/Materialicons.ttf")
-      execute_process(COMMAND bash -c "mkdir -p $ENV{HOME}/.local/share/fonts && cp ./desktop/client/res/font.ttf $ENV{HOME}/.local/share/fonts/Materialicons.ttf")
+      file(COPY "./desktop/client/res/font.ttf" DESTINATION "$ENV{HOME}/.local/share/fonts/Materialicons.ttf")
    endif()
 endif()
 
-add_executable(client desktop/client/main.cpp)
-add_executable(server desktop/server/main.cpp)
+add_executable(client desktop/client/main.cpp desktop/client/src/canvas.cpp desktop/client/src/comservice.cpp desktop/client/src/tcpservice.cpp desktop/client/src/window.cpp)
+target_include_directories(client PUBLIC desktop/client/include)
 target_link_libraries(client PUBLIC Qt6::Core Qt6::Widgets)
+
+add_executable(server desktop/server/main.cpp desktop/server/src/comservice.cpp desktop/server/src/tcpservice.cpp desktop/server/src/window.cpp)
+target_include_directories(server PUBLIC desktop/server/include)
 target_link_libraries(server PUBLIC Qt6::Core Qt6::Widgets)
-INCLUDE_DIRECTORIES(desktop/client/include)
-INCLUDE_DIRECTORIES(desktop/server/include)
+
 INCLUDE_DIRECTORIES(shared) 
+
+# INCLUDE_DIRECTORIES(desktop/client/include)
+# INCLUDE_DIRECTORIES(desktop/server/include)
