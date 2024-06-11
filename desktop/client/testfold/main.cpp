@@ -4,6 +4,7 @@
 #include <QFont>
 #include <QLabel>
 #include <QPainter>
+
 class Window : public QDialog
 {
 public:
@@ -26,21 +27,33 @@ public:
 
         // Set the background color
         setStyleSheet("background-color: rgb(64, 32, 60);");
-        // QFont sansFont("0xebdc", 12);
-        QLabel *label = new QLabel(QChar(0xebdc)); // Specific icon character
-        label->setFont(materialIconsFont);
 
-        // Add the label to the layout
-        layout->addWidget(label, 1, 1);
-        layout->setAlignment(Qt::AlignCenter | Qt::AlignRight);
+        QLabel *battery = new QLabel(QChar(0xebdc)); // Specific icon character
+        battery->setFont(materialIconsFont);
+        battery->setStyleSheet("color: white;");
 
-        QRectF rectangle(10.0, 20.0, 80.0, 60.0);
-        int startAngle = 30 * 16;
-        int spanAngle = 120 * 16;
+        QLabel *speed = new QLabel(QChar(0xe9e4)); // Another specific icon character
+        speed->setFont(materialIconsFont);
+        speed->setStyleSheet("color: white;");
 
-        QPainter painter(this);
-        painter.drawArc(rectangle, startAngle, spanAngle);
-        layout->addWidget(painter.drawArc(rectangle, startAngle, spanAngle), Qt::AlignCenter);
+        QLabel *temp = new QLabel(QChar(0xe1ff)); // Another specific icon character
+        temp->setFont(materialIconsFont);
+        temp->setStyleSheet("color: white;");
+
+        QLabel *Rturnsignal = new QLabel(QChar(0xe5c4)); // Another specific icon character
+        Rturnsignal->setFont(materialIconsFont);
+        Rturnsignal->setStyleSheet("color: green;");
+
+        QLabel *Lturnsignal = new QLabel(QChar(0xe5c8)); // Another specific icon character
+        Lturnsignal->setFont(materialIconsFont);
+        Lturnsignal->setStyleSheet("color: green;");
+
+        // Add the batterys to the layout with alignment
+        layout->addWidget(battery, 2, 3, Qt::AlignRight);
+        layout->addWidget(speed, 2, 2, Qt::AlignCenter | Qt::AlignBottom);
+        layout->addWidget(temp, 1, 3, Qt::AlignRight);
+        layout->addWidget(Rturnsignal, 0, 0, Qt::AlignTop | Qt::AlignLeft);
+        layout->addWidget(Lturnsignal, 0, 3, Qt::AlignTop | Qt::AlignRight);
     }
 };
 
