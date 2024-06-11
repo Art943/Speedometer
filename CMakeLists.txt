@@ -27,7 +27,4 @@ add_executable(server desktop/server/main.cpp desktop/server/src/comservice.cpp 
 target_include_directories(server PUBLIC desktop/server/include)
 target_link_libraries(server PUBLIC Qt6::Core Qt6::Widgets)
 
-INCLUDE_DIRECTORIES(shared) 
-
-# INCLUDE_DIRECTORIES(desktop/client/include)
-# INCLUDE_DIRECTORIES(desktop/server/include)
+INCLUDE_DIRECTORIES(shared)
