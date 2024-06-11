@@ -38,7 +38,7 @@ class SpeedGauge : public QWidget
 public:
     explicit SpeedGauge(QWidget *parent = nullptr) : QWidget(parent)
     {
-        setFixedSize(510, 510); // Set an appropriate size for the SpeedGauge widget
+        setFixedSize(500, 500); // Set an appropriate size for the SpeedGauge widget
     }
 
 protected:
@@ -53,10 +53,10 @@ protected:
         painter.setBrush(Qt::transparent);
 
         // Set pen for the gauge
-        painter.setPen(QPen(Qt::white, 10));
+        painter.setPen(QPen(Qt::white, 8));
 
         // Define the rectangle and angles for the arc
-        QRectF rect(50.0, 50.0, 450.0, 450.0);
+        QRectF rect(5.0, 5.0, 480.0, 480.0);
         int startAngle = -30 * 16;
         int spanAngle = 240 * 16;
 
@@ -130,7 +130,7 @@ public:
         layout->addWidget(Rturnsignal, 0, 0, Qt::AlignTop | Qt::AlignLeft);
         layout->addWidget(Lturnsignal, 0, 3, Qt::AlignTop | Qt::AlignRight);
         layout->addLayout(batteryTempLayout, 1, 3, Qt::AlignBottom | Qt::AlignRight);
-        layout->addWidget(speedGauge, 0, 2);
+        layout->addWidget(speedGauge, 0, 2, Qt::AlignCenter);
         layout->addWidget(speed, 2, 2, Qt::AlignCenter | Qt::AlignBottom);
     }
 };
