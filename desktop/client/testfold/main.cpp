@@ -53,19 +53,32 @@ protected:
         painter.setBrush(Qt::transparent);
 
         // Set pen for the gauge
-        painter.setPen(QPen(Qt::white, 8));
+        painter.setPen(QPen(Qt::white, 6));
 
         // Define the rectangle and angles for the arc
         QRectF rect(5.0, 5.0, 480.0, 480.0);
         int startAngle = -30 * 16;
         int spanAngle = 240 * 16;
-
         // Draw the gauge arc
         painter.drawArc(rect, startAngle, spanAngle);
 
         // Example: Draw the speed indicator (this would need to be dynamic in a real application)
-        painter.setPen(QPen(Qt::red, 5));
-        painter.drawLine(rect.center(), rect.center() + QPointF(180 * cos(M_PI / 6), 180 * sin(M_PI / 6)));
+        static const QPoint needle[4] = {
+            QPoint(1, 10),
+            QPoint(-1, 10),
+            QPoint(0, -82)};
+        const QColor needlecolor(palette().color(QPalette::Text));
+        int side = qMin(width(), height());
+
+        painter.translate(width() / 2, height() / 2);
+        painter.scale(side / 200.0, side / 200.0);
+
+        painter.setBrush(needlecolor);
+        int degrees = 50;
+        painter.save();
+        painter.rotate(1.0 * (degrees - 120));
+        painter.drawConvexPolygon(needle, 3);
+        painter.restore();
     }
 };
 
