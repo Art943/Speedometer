@@ -11,7 +11,8 @@
 class COMService
 {
 private:
-    void extract(int start, int length);
+    void extract(int start, int length, uint32_t &value);
+    void extract(int start, int length, int32_t &value);
 
 protected:
     uint8_t buffer[Setting::Signal::BUFFER_LENGTH];
