@@ -28,7 +28,35 @@ protected:
         QColor bgColor = pal.color(backgroundRole());
         painter.setBrush(bgColor);
         painter.setPen(bgColor);
-        painter.drawRect(49, 23, 50, 100);
+        painter.drawRect(40, 15, 27, 70);
+    }
+};
+// To set digitalspeed
+class CustomSpeedLabel : public QLabel
+{
+public:
+    explicit CustomSpeedLabel(const QString &text, QWidget *parent = nullptr)
+        : QLabel(text, parent)
+    {
+    }
+
+protected:
+    void paintEvent(QPaintEvent *event) override
+    {
+        QLabel::paintEvent(event);
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
+        QPalette pal = this->palette();
+        QColor bgColor = pal.color(backgroundRole());
+        painter.setBrush(bgColor);
+        painter.setPen(bgColor);
+        painter.drawRect(15, 75, 75, 30);
+
+        int speeddigit = 240;
+        // Draw the "km/h" text on top of the speed label
+        painter.setPen(QPen(Qt::white));
+        painter.setFont(QFont("Arial", 20));
+        painter.drawText(rect(), Qt::AlignCenter | Qt::AlignBottom, QString::number(speeddigit) + " km/h");
     }
 };
 
@@ -53,27 +81,58 @@ protected:
         painter.setBrush(Qt::transparent);
 
         // Set pen for the gauge
-        painter.setPen(QPen(Qt::white, 6));
+        painter.setPen(QPen(Qt::white, 7));
 
         // Define the rectangle and angles for the arc
-        QRectF rect(5.0, 5.0, 480.0, 480.0);
+        QRectF rect(5.0, 5.0, 485.0, 485.0);
         int startAngle = -30 * 16;
         int spanAngle = 240 * 16;
         // Draw the gauge arc
         painter.drawArc(rect, startAngle, spanAngle);
+        // scales and speed
+        painter.setPen(QPen(Qt::white, 6));
+        for (int i = 0; i <= 12; ++i)
+        {
+            int angle = startAngle + (spanAngle / 12) * i;
+            double radian = angle / 16.0 * M_PI / 180.0;
+            int x1 = 250 + 220 * cos(radian);
+            int y1 = 250 - 220 * sin(radian);
+            int x2 = 250 + 240 * cos(radian);
+            int y2 = 250 - 240 * sin(radian);
+            painter.drawLine(x1, y1, x2, y2);
 
+            // Draw scale numbers
+            int speed = 240 - (i * 20);
+            int xText = 250 + 180 * cos(radian);
+            int yText = 250 - 180 * sin(radian);
+            painter.drawText(xText - 15, yText + 5, QString::number(speed));
+        }
+        // Draw shorter scales between the main scales
+        painter.setPen(QPen(Qt::white, 2));
+        for (int i = 0; i < 60; ++i)
+        {
+            int angle = startAngle + (spanAngle / 60) * i;
+            double radian = angle / 16.0 * M_PI / 180.0;
+            int x1 = 250 + 230 * cos(radian);
+            int y1 = 250 - 230 * sin(radian);
+            int x2 = 250 + 240 * cos(radian); // Adjust this to touch the arc
+            int y2 = 250 - 240 * sin(radian); // Adjust this to touch the arc
+            painter.drawLine(x1, y1, x2, y2);
+        }
         // Example: Draw the speed indicator (this would need to be dynamic in a real application)
-        static const QPoint needle[4] = {
+        static const QPoint needle[3] = {
             QPoint(1, 10),
             QPoint(-1, 10),
             QPoint(0, -82)};
-        const QColor needlecolor(palette().color(QPalette::Text));
+
         int side = qMin(width(), height());
 
         painter.translate(width() / 2, height() / 2);
         painter.scale(side / 200.0, side / 200.0);
 
+        const QColor needlecolor(Qt::red);
         painter.setBrush(needlecolor);
+        painter.setPen(QPen(needlecolor, 3));
         int degrees = 50;
         painter.save();
         painter.rotate(1.0 * (degrees - 120));
@@ -94,13 +153,13 @@ public:
 
         // Create QFont objects using the Material Icons font with different sizes
         QFont materialIconsFont(materialIconsFontFamily);
-        materialIconsFont.setPointSize(110);
+        materialIconsFont.setPointSize(80);
 
         QFont speedFont(materialIconsFontFamily);
         speedFont.setPointSize(80);
 
         QFont tempFont(materialIconsFontFamily);
-        tempFont.setPointSize(50);
+        tempFont.setPointSize(40);
 
         // Set a fixed size for the window
         const int fixedWidth = 800;
@@ -115,27 +174,70 @@ public:
         battery->setFont(materialIconsFont);
         battery->setStyleSheet("color: white;");
 
-        QLabel *speed = new QLabel(QChar(0xe9e4)); // Another specific icon character
-        speed->setFont(speedFont);
-        speed->setStyleSheet("color: white;");
+        int batteryValue = 0;
+
+        QLabel *batteryPercentLabel = new QLabel(QString::number(batteryValue) + "%"); // Initial battery percentage
+        batteryPercentLabel->setFont(QFont("Arial", 16));
+        batteryPercentLabel->setStyleSheet("color: white;");
 
         QLabel *temp = new QLabel(QChar(0xe1ff)); // Another specific icon character
         temp->setFont(tempFont);
-        temp->setStyleSheet("color: white;");
+        temp->setStyleSheet("color: white; background-color: transparent;");
+
+        int tempValue = 0;
+
+        QLabel *tempLabel = new QLabel(QString::number(tempValue) + "°C"); // Initial temperature
+        tempLabel->setFont(QFont("Arial", 16));
+        tempLabel->setStyleSheet("color: white; background-color: transparent;");
+
+        CustomSpeedLabel *speedwid = new CustomSpeedLabel(QChar(0xe9e4)); // Another specific icon character
+        speedwid->setFont(speedFont);
+        speedwid->setStyleSheet("color: white;");
 
         QLabel *Rturnsignal = new QLabel(QChar(0xe5c4)); // Another specific icon character
         Rturnsignal->setFont(materialIconsFont);
-        Rturnsignal->setStyleSheet("color: green;");
 
         QLabel *Lturnsignal = new QLabel(QChar(0xe5c8)); // Another specific icon character
         Lturnsignal->setFont(materialIconsFont);
-        Lturnsignal->setStyleSheet("color: green;");
-
         // Create a vertical layout for battery and temp
         QVBoxLayout *batteryTempLayout = new QVBoxLayout();
         batteryTempLayout->addWidget(temp, 0, Qt::AlignCenter);
-        batteryTempLayout->addWidget(battery, 0, Qt::AlignRight);
+        batteryTempLayout->addWidget(tempLabel, 0, Qt::AlignCenter); // Add temperature label
+        batteryTempLayout->addWidget(battery, 0, Qt::AlignCenter);
+        batteryTempLayout->addWidget(batteryPercentLabel, 0, Qt::AlignCenter);
 
+        QLabel *nosignal = new QLabel(QChar(0xe628)); // Another specific icon character
+        nosignal->setFont(speedFont);
+        nosignal->setStyleSheet("color: red;");
+        bool signal = true;
+        bool Rightturnsignal = true;
+        bool Leftturnsignal = true;
+        if (Leftturnsignal)
+        {
+            Lturnsignal->setStyleSheet("color: green;");
+        }
+        else
+        {
+            Lturnsignal->setStyleSheet("color: rgb(64, 32, 60);");
+        }
+        if (Rightturnsignal)
+        {
+            Rturnsignal->setStyleSheet("color: green;");
+        }
+        else
+        {
+            Rturnsignal->setStyleSheet("color: rgb(64, 32, 60);");
+        }
+
+        QLabel *centralwidget;
+        if (signal)
+        {
+            centralwidget = speedwid;
+        }
+        else
+        {
+            centralwidget = nosignal;
+        }
         // Create and add the custom speed gauge widget
         SpeedGauge *speedGauge = new SpeedGauge();
 
@@ -144,7 +246,7 @@ public:
         layout->addWidget(Lturnsignal, 0, 3, Qt::AlignTop | Qt::AlignRight);
         layout->addLayout(batteryTempLayout, 1, 3, Qt::AlignBottom | Qt::AlignRight);
         layout->addWidget(speedGauge, 0, 2, Qt::AlignCenter);
-        layout->addWidget(speed, 2, 2, Qt::AlignCenter | Qt::AlignBottom);
+        layout->addWidget(centralwidget, 2, 2, Qt::AlignCenter | Qt::AlignBottom);
     }
 };
 
