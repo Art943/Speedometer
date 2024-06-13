@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <QDialog>
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QFont>
@@ -84,7 +83,7 @@ protected:
         painter.setPen(QPen(Qt::white, 7));
 
         // Define the rectangle and angles for the arc
-        QRectF rect(5.0, 5.0, 485.0, 485.0);
+        QRectF rect(7.0, 5.0, 485.0, 485.0);
         int startAngle = -30 * 16;
         int spanAngle = 240 * 16;
         // Draw the gauge arc
@@ -141,10 +140,10 @@ protected:
     }
 };
 
-class Window : public QDialog
+class Canvas : public QWidget
 {
 public:
-    Window(QDialog *parent = nullptr) : QDialog(parent)
+    Canvas(QWidget *parent = nullptr) : QWidget(parent)
     {
         // Create a grid layout
         QGridLayout *layout = new QGridLayout(this);
@@ -254,7 +253,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    Window gauge;
+    Canvas gauge;
     gauge.show();
 
     return app.exec();
