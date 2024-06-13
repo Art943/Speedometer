@@ -31,9 +31,9 @@ public:
     int32_t getTemperature();
     uint32_t getBatteryLevel();
 
-    bool leftLightStatus();
-    bool rightLightStatus();
-    bool warningLightStatus();
+    bool getLeftLightStatus();
+    bool getRightLightStatus();
+    bool getWarningLightStatus();
 };
 
 #endif
