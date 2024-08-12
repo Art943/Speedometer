@@ -2,20 +2,24 @@
 #define WINDOW_H
 
 #include <QDialog>
-#include <QGridLayout>
+#include <QTimer>
+#include "canvas.h"
 
 class Window : public QDialog
 {
-
-    QGridLayout layout;
+    Canvas *canvas;
+    QTimer *timer;
 
 public:
-    Window()
-    {
-        setLayout(&layout);
-        layout.setSizeConstraint(QGridLayout::SetFixedSize);
-        setWindowTitle("Client");
-    }
+    explicit Window(QDialog *parent = nullptr);
+    ~Window() {}
+
+    void updateSpeed(int speed);
+    void updateBattery(int battery);
+    void updateTemperature(int temperature);
+
+private:
+    void refreshCanvas();
 };
 
-#endif
+#endif // WINDOW_H
