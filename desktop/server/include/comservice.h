@@ -24,7 +24,7 @@ public:
     // Virtual destructor to ensure proper cleanup of derived classes
     virtual ~COMService() = default;
 
-    void connected(bool newStatus) { status = newStatus; }
+    bool isConnected(void) { return status; }
 
     void setSpeed(uint32_t speed);
     void setTemperature(int32_t temperature);
