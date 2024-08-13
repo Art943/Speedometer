@@ -3,9 +3,9 @@
 #include <QFont>
 
 Canvas::Canvas(QWidget *parent)
-    : QWidget(parent), speedValue(0), batteryValue(0), tempValue(0), signalsValue(0)
+    : QWidget(parent), speedValue(0), batteryValue(0), tempValue(0), LeftLightstatus(false), RightLightstatus(false), WarningLightstatus(false), status(false)
 {
-    setFixedSize(800, 560);
+    ;
 }
 
 void Canvas::paintEvent(QPaintEvent *event)
@@ -119,7 +119,8 @@ void Canvas::paintEvent(QPaintEvent *event)
     painter.setPen(Qt::white);
     painter.drawText(700, 270, QString::number(tempValue) + "°C");
     // Speed icon
-    painter.setFont(QFont("Material Icons", 80));
+    if ()
+        painter.setFont(QFont("Material Icons", 80));
     painter.drawText(350, 500, QChar(0xe9e4));
 
     // Speed value

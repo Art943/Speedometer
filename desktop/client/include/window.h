@@ -4,20 +4,18 @@
 #include <QDialog>
 #include <QTimer>
 #include "canvas.h"
+#include <QGridLayout>
+#include "comservice.h"
 
 class Window : public QDialog
 {
-    Canvas *canvas;
-    QTimer *timer;
+    Canvas canvas;
+    QTimer timer;
+    QGridLayout layout;
+    COMService &comservice;
 
 public:
-    explicit Window(QDialog *parent = nullptr);
-    ~Window() {}
-
-    void updateSpeed(int speed);
-    void updateBattery(int battery);
-    void updateTemperature(int temperature);
-    void updateSignals(int turnsignals);
+    explicit Window(COMService &com);
 
 private:
     void refreshCanvas();
