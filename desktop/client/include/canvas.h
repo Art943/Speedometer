@@ -9,6 +9,7 @@ class Canvas : public QWidget
     int speedValue;
     int batteryValue;
     int tempValue;
+    int signalsValue;
 
 public:
     explicit Canvas(QWidget *parent = nullptr);
@@ -26,6 +27,11 @@ public:
     void setTempValue(int value)
     {
         tempValue = value;
+        update();
+    }
+    void setSignalsValue(int value)
+    {
+        signalsValue = value;
         update();
     }
 

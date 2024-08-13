@@ -3,7 +3,7 @@
 #include <QFont>
 
 Canvas::Canvas(QWidget *parent)
-    : QWidget(parent), speedValue(0), batteryValue(0), tempValue(0)
+    : QWidget(parent), speedValue(0), batteryValue(0), tempValue(0), signalsValue(0)
 {
     setFixedSize(800, 560);
 }
@@ -128,7 +128,12 @@ void Canvas::paintEvent(QPaintEvent *event)
 
     // Turn signals
     painter.setFont(QFont("Material Icons", 80));
-    painter.setPen(Qt::green);
+    QString backgroundColor = "rgb(64, 32, 60)"; // Your background color
+
+    if (signalsValue)
+    {
+        ;
+    }
     painter.drawText(650, 100, QChar(0xe5c8)); // Left turn signal
     painter.drawText(50, 100, QChar(0xe5c4));  // Right turn signal
 }

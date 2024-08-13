@@ -17,6 +17,7 @@ public:
     void updateSpeed(int speed);
     void updateBattery(int battery);
     void updateTemperature(int temperature);
+    void updateSignals(int turnsignals);
 
 private:
     void refreshCanvas();
