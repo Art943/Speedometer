@@ -1,53 +1,48 @@
 #include "window.h"
 
-Window::Window() :
-      gridLayout(this),
-      speedLabel("Speed:", this),
-      speedSlider(Qt::Horizontal, this),
-      currentSpeedLabel(QString::number(0), this),
-      temperatureLabel("Temperature:", this),
-      temperatureSlider(Qt::Horizontal, this),
-      currentTemperatureLabel(QString::number(-60), this),
-      batteryLabel("Battery Level:", this),
-      batterySlider(Qt::Horizontal, this),
-      currentBatteryLabel(QString::number(0), this),
-      lightSignalsLabel("Light Signals:", this),
-      leftCheckBox("Left", this),
-      rightCheckBox("Right", this),
-      warningCheckBox("Warning", this)
+Window::Window() : gridLayout(this),
+                   speedLabel("Speed:", this),
+                   speedSlider(Qt::Horizontal, this),
+                   currentSpeedLabel(QString::number(Setting::Signal::Speed::Min), this),
+                   temperatureLabel("Temperature:", this),
+                   temperatureSlider(Qt::Horizontal, this),
+                   batteryLabel("Battery Level:", this),
+                   batterySlider(Qt::Horizontal, this),
+                   currentBatteryLabel(QString::number(Setting::Signal::BatteryLevel::Min), this),
+                   lightSignalsLabel("Light Signals:", this),
+                   leftCheckBox("Left", this),
+                   rightCheckBox("Right", this),
+                   warningCheckBox("Warning", this)
 {
 
-    currentSpeedLabel.setFixedWidth(50);
-    // Title for the main window
-    setWindowTitle("Server");
+    currentSpeedLabel.setFixedWidth(50); // Fixed width in order to avoid the resizing of the slider.
 
-    // Fixed width for the main window
-    setFixedWidth(600);
+    setWindowTitle("Server"); // Title for the main window
+    setFixedWidth(600);       // Fixed width for the main window
 
     // Speed Slider
-    speedSlider.setMinimum(0);
-    speedSlider.setMaximum(240);
+    speedSlider.setMinimum(Setting::Signal::Speed::Min);
+    speedSlider.setMaximum(Setting::Signal::Speed::Max);
     connect(&speedSlider, &QSlider::valueChanged, this, &Window::updateSpeedLabel);
 
     // Temperature Slider
-    temperatureSlider.setMinimum(-60);
-    temperatureSlider.setMaximum(60);
+    temperatureSlider.setMinimum(Setting::Signal::Temperature::Min);
+    temperatureSlider.setMaximum(Setting::Signal::Temperature::Max);
     connect(&temperatureSlider, &QSlider::valueChanged, this, &Window::updateTemperatureLabel);
 
-    // Default values
-    updateTemperatureLabel(0); // Ensure display shows 0°C initially
+    // Initial temperature set to 0 instead of -60
+    updateTemperatureLabel(0);
 
     // Battery Slider
-    batterySlider.setMinimum(0);
-    batterySlider.setMaximum(100);
+    batterySlider.setMinimum(Setting::Signal::BatteryLevel::Min);
+    batterySlider.setMaximum(Setting::Signal::BatteryLevel::Max);
     connect(&batterySlider, &QSlider::valueChanged, this, &Window::updateBatteryLabel);
 
     // Checkboxes
     connect(&leftCheckBox, &QCheckBox::toggled, this, &Window::onLeftCheckBoxToggled);
     connect(&rightCheckBox, &QCheckBox::toggled, this, &Window::onRightCheckBoxToggled);
 
-    // Row index for grid layout
-    int row = 0; // I could hardcode this but it improves the readability
+    int row = 0; // The row index improves the readability of the code
 
     // Add Speed Slider to the grid layout
     gridLayout.addWidget(&speedLabel, row, 0, 1, 1, Qt::AlignRight);
