@@ -16,7 +16,7 @@ private:
 
 protected:
     uint8_t buffer[Setting::Signal::BUFFER_LENGTH];
-    std::atomic<bool> status{false};
+    std::atomic<bool> connectionStatus{false};
     std::mutex mtx;
 
     virtual void run(void) = 0;
@@ -25,7 +25,7 @@ public:
     // Virtual destructor to ensure proper cleanup of derived classes
     virtual ~COMService() = default;
 
-    bool connected(void) { return status; }
+    bool connected(void) { return connectionStatus; }
 
     uint32_t getSpeed();
     int32_t getTemperature();

@@ -45,15 +45,13 @@ namespace Setting
             constexpr int Length{1};
         }
 
-        namespace WarningLight
+        namespace TCP
         {
-            constexpr int Min{0};
-            constexpr int Max{1};
-            constexpr int Start{24};
-            constexpr int Length{1};
+            constexpr int PORT{12345};
+            const char *const IP{"127.0.0.1"};
         }
 
-        constexpr int BUFFER_LENGTH{4};
+        constexpr int BUFFER_LENGTH{3};
     }
 }
 
