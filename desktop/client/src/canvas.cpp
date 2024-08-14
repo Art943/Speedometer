@@ -116,7 +116,10 @@ void Canvas::paintEvent(QPaintEvent *event)
     }
     painter.setPen(batteryColor);
     painter.drawText(650, 420, QChar(0xebdc));
-    painter.drawRect(650, 415, 20, batteryValue);
+    QRectF rectToFill(701, 402, 45, -batteryValue);
+    QColor fillColor(batteryColor);
+    painter.fillRect(rectToFill, fillColor);
+
     // Battery percentage
     painter.setFont(QFont("Arial", 16));
     painter.setPen(Qt::white);
@@ -144,28 +147,28 @@ void Canvas::paintEvent(QPaintEvent *event)
     painter.setFont(QFont("Material Icons", 80));
     if (status)
     {
-        painter.drawText(350, 500, QChar(0xe9e4));
+        painter.drawText(350, 450, QChar(0xe9e4));
         // Speed value
         painter.setFont(QFont("Arial", 16));
-        painter.drawText(370, 520, QString::number(speedValue) + " km/h");
+        painter.drawText(370, 470, QString::number(speedValue) + " km/h");
     }
     else
     {
         painter.setPen(Qt::red);
-        painter.drawText(350, 500, QChar(0xe628));
+        painter.drawText(350, 450, QChar(0xe628));
 
         painter.setFont(QFont("Arial", 16));
-        painter.drawText(370, 520, " Error Conection");
+        painter.drawText(320, 470, " Error Conection");
     }
 
     // Turn signals
     painter.setPen(Qt::green);
     painter.setFont(QFont("Material Icons", 80));
     int count = 0;
-
-    if (LeftLightstatus && count < 5)
+    if (RightLightstatus && LeftLightstatus && count < 5)
     {
         painter.drawText(650, 100, QChar(0xe5c8)); // Left turn signal
+        painter.drawText(50, 100, QChar(0xe5c4));  // Right turn signal
         count++;
     }
     else if (RightLightstatus && count < 5)
@@ -173,10 +176,9 @@ void Canvas::paintEvent(QPaintEvent *event)
         painter.drawText(50, 100, QChar(0xe5c4)); // Right turn signal
         count++;
     }
-    else if (RightLightstatus && LeftLightstatus && count < 5)
+    else if (LeftLightstatus && count < 5)
     {
         painter.drawText(650, 100, QChar(0xe5c8)); // Left turn signal
-        painter.drawText(50, 100, QChar(0xe5c4));  // Right turn signal
         count++;
     }
 }
