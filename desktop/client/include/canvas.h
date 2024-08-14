@@ -11,6 +11,7 @@ class Canvas : public QWidget
     bool status;
     bool LeftLightstatus;
     bool RightLightstatus;
+    int count = 0;
 
 public:
     void setSpeedValue(int _speedValue);

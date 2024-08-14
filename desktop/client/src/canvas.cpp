@@ -123,7 +123,7 @@ void Canvas::paintEvent(QPaintEvent *event)
     // Battery percentage
     painter.setFont(QFont("Arial", 16));
     painter.setPen(Qt::white);
-    painter.drawText(700, 440, QString::number(batteryValue) + "%");
+    painter.drawText(710, 440, QString::number(batteryValue) + "%");
 
     QColor tempColor = Qt::white;
     // Temperature icon
@@ -142,7 +142,7 @@ void Canvas::paintEvent(QPaintEvent *event)
     painter.setFont(QFont("Arial", 16));
 
     painter.setPen(Qt::white);
-    painter.drawText(700, 270, QString::number(tempValue) + "°C");
+    painter.drawText(710, 270, QString::number(tempValue) + "°C");
     // Speed icon
     painter.setFont(QFont("Material Icons", 80));
     if (status)
@@ -164,21 +164,31 @@ void Canvas::paintEvent(QPaintEvent *event)
     // Turn signals
     painter.setPen(Qt::green);
     painter.setFont(QFont("Material Icons", 80));
-    int count = 0;
-    if (RightLightstatus && LeftLightstatus && count < 5)
+    if (count < 10)
     {
-        painter.drawText(650, 100, QChar(0xe5c8)); // Left turn signal
-        painter.drawText(50, 100, QChar(0xe5c4));  // Right turn signal
+        if (RightLightstatus && LeftLightstatus)
+        {
+            painter.drawText(650, 140, QChar(0xe5c8)); // Left turn signal
+            painter.drawText(50, 140, QChar(0xe5c4));  // Right turn signal
+            count++;
+        }
+        else if (RightLightstatus)
+        {
+            painter.drawText(50, 140, QChar(0xe5c4)); // Right turn signal
+            count++;
+        }
+        else if (LeftLightstatus)
+        {
+            painter.drawText(650, 140, QChar(0xe5c8)); // Left turn signal
+            count++;
+        }
+    }
+    else if (count < 20)
+    {
         count++;
     }
-    else if (RightLightstatus && count < 5)
+    else
     {
-        painter.drawText(50, 100, QChar(0xe5c4)); // Right turn signal
-        count++;
-    }
-    else if (LeftLightstatus && count < 5)
-    {
-        painter.drawText(650, 100, QChar(0xe5c8)); // Left turn signal
-        count++;
+        count = 0;
     }
 }

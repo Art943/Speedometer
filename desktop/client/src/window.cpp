@@ -28,11 +28,11 @@ void Window::refreshCanvas()
     else
     {
         canvas.setSpeedValue(0);
-        canvas.setBatteryValue(100);
+        canvas.setBatteryValue(0);
         canvas.setTempValue(0);
-        canvas.setConnection(true);
-        canvas.setLeftLightStatus(false);
-        canvas.setRightLightStatus(false);
+        canvas.setConnection(false);
+        canvas.setLeftLightStatus(true);
+        canvas.setRightLightStatus(true);
     }
 
     canvas.update();
