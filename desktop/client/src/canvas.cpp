@@ -2,12 +2,6 @@
 #include <QPainter>
 #include <QFont>
 
-Canvas::Canvas(QWidget *parent)
-    : QWidget(parent), speedValue(0), batteryValue(0), tempValue(0), LeftLightstatus(false), RightLightstatus(false), WarningLightstatus(false), status(false)
-{
-    ;
-}
-
 void Canvas::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
@@ -80,7 +74,7 @@ void Canvas::paintEvent(QPaintEvent *event)
     // Battery icon
     painter.resetTransform();
     painter.setFont(QFont("Material Icons", 110));
-    painter.drawText(650, 420, QChar(0xebdc));
+
     QColor batteryColor = Qt::green;
     if (batteryValue < 25)
     {
@@ -95,6 +89,8 @@ void Canvas::paintEvent(QPaintEvent *event)
         batteryColor = Qt::green;
     }
     painter.setPen(batteryColor);
+    painter.drawText(650, 420, QChar(0xebdc));
+    painter.drawRect(650, 415, 20, batteryValue);
     // Battery percentage
     painter.setFont(QFont("Arial", 16));
     painter.setPen(Qt::white);
@@ -119,22 +115,42 @@ void Canvas::paintEvent(QPaintEvent *event)
     painter.setPen(Qt::white);
     painter.drawText(700, 270, QString::number(tempValue) + "°C");
     // Speed icon
-    if ()
-        painter.setFont(QFont("Material Icons", 80));
-    painter.drawText(350, 500, QChar(0xe9e4));
+    painter.setFont(QFont("Material Icons", 80));
+    if (status)
+    {
+        painter.drawText(350, 500, QChar(0xe9e4));
+        // Speed value
+        painter.setFont(QFont("Arial", 16));
+        painter.drawText(370, 520, QString::number(speedValue) + " km/h");
+    }
+    else
+    {
+        painter.setPen(Qt::red);
+        painter.drawText(350, 500, QChar(0xe628));
 
-    // Speed value
-    painter.setFont(QFont("Arial", 16));
-    painter.drawText(370, 520, QString::number(speedValue) + " km/h");
+        painter.setFont(QFont("Arial", 16));
+        painter.drawText(370, 520, " Error Conection");
+    }
 
     // Turn signals
+    painter.setPen(Qt::green);
     painter.setFont(QFont("Material Icons", 80));
-    QString backgroundColor = "rgb(64, 32, 60)"; // Your background color
+    int count = 0;
 
-    if (signalsValue)
+    if (LeftLightstatus && count < 5)
     {
-        ;
+        painter.drawText(650, 100, QChar(0xe5c8)); // Left turn signal
+        count++;
     }
-    painter.drawText(650, 100, QChar(0xe5c8)); // Left turn signal
-    painter.drawText(50, 100, QChar(0xe5c4));  // Right turn signal
+    else if (RightLightstatus && count < 5)
+    {
+        painter.drawText(50, 100, QChar(0xe5c4)); // Right turn signal
+        count++;
+    }
+    else if (WarningLightstatus && count < 5)
+    {
+        painter.drawText(650, 100, QChar(0xe5c8)); // Left turn signal
+        painter.drawText(50, 100, QChar(0xe5c4));  // Right turn signal
+        count++;
+    }
 }

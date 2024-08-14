@@ -1,8 +1,8 @@
 #include "window.h"
 
-Window::Window(COMService *com) : comservice(com)
+Window::Window(COMService &com) : comservice(com)
 {
-    layout.addWidget(&canvas, 0, 0);
+    layout.addWidget(&canvas);
     this->setFixedSize(800, 560);
 }
 
