@@ -19,6 +19,7 @@ Window::Window() : gridLayout(this),
 
     setWindowTitle("Server"); // Title for the main window
     setFixedWidth(600);       // Fixed width for the main window
+    setFixedHeight(125);
 
     // Speed Slider
     speedSlider.setMinimum(Setting::Signal::Speed::Min);
