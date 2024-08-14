@@ -19,32 +19,33 @@ private:
     void updateBatteryLabel(int value);
     void onLeftCheckBoxToggled(bool checked);
     void onRightCheckBoxToggled(bool checked);
+    void onWarningCheckBoxToggled(bool checked);
 
 private:
     // Layout
     QGridLayout gridLayout;
 
-    // Speed
+    // Speed signal
     QLabel speedLabel;
     QSlider speedSlider;
     QLabel currentSpeedLabel;
 
-    // Temperature
+    // Temperature signal
     QLabel temperatureLabel;
     QSlider temperatureSlider;
     QLabel currentTemperatureLabel;
 
-    // Battery
+    // Battery signal
     QLabel batteryLabel;
     QSlider batterySlider;
     QLabel currentBatteryLabel;
 
-    // Checkbox
+    // Light signal
     QLabel lightSignalsLabel;
     QCheckBox leftCheckBox;
     QCheckBox rightCheckBox;
     QCheckBox warningCheckBox;
-	QHBoxLayout checkboxLayout;
+    QHBoxLayout checkboxLayout;
 };
 
 #endif

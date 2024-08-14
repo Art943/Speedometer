@@ -43,6 +43,7 @@ Window::Window() : gridLayout(this),
     // Checkboxes
     connect(&leftCheckBox, &QCheckBox::toggled, this, &Window::onLeftCheckBoxToggled);
     connect(&rightCheckBox, &QCheckBox::toggled, this, &Window::onRightCheckBoxToggled);
+    connect(&warningCheckBox, &QCheckBox::toggled, this, &Window::onWarningCheckBoxToggled);
 
     int row = 0; // The row index improves the readability of the code
 
@@ -110,12 +111,19 @@ void Window::onRightCheckBoxToggled(bool checked)
 {
     if (checked)
     {
+        // Call tcpip
         leftCheckBox.setEnabled(false);                                                        // Disable Left checkbox
         leftCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonDeactivated); // Gray out Left checkbox
     }
     else
     {
+        // Call tcpip
         leftCheckBox.setEnabled(true);                                                   // Enable Left checkbox
         leftCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonReset); // Remove gray out effect
     }
+}
+
+void Window::onWarningCheckBoxToggled(bool checked)
+{
+    // Call tcpip and tell her that the warning signal is clicked
 }
