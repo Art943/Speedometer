@@ -2,8 +2,34 @@
 #include <QPainter>
 #include <QFont>
 
+void Canvas::setSpeedValue(int _speedValue)
+{
+    speedValue = _speedValue;
+}
+void Canvas::setBatteryValue(int _batteryValue)
+{
+    batteryValue = _batteryValue;
+}
+void Canvas::setTempValue(int _tempValue)
+{
+    tempValue = _tempValue;
+}
+void Canvas::setConnection(bool _status)
+{
+    status = _status;
+}
+void Canvas::setLeftLightStatus(bool _LeftLightstatus)
+{
+    LeftLightstatus = _LeftLightstatus;
+}
+void Canvas::setRightLightStatus(bool _RightLightstatus)
+{
+    RightLightstatus = _RightLightstatus;
+}
+
 void Canvas::paintEvent(QPaintEvent *event)
 {
+
     QWidget::paintEvent(event);
 
     QPainter painter(this);
@@ -147,7 +173,7 @@ void Canvas::paintEvent(QPaintEvent *event)
         painter.drawText(50, 100, QChar(0xe5c4)); // Right turn signal
         count++;
     }
-    else if (WarningLightstatus && count < 5)
+    else if (RightLightstatus && LeftLightstatus && count < 5)
     {
         painter.drawText(650, 100, QChar(0xe5c8)); // Left turn signal
         painter.drawText(50, 100, QChar(0xe5c4));  // Right turn signal

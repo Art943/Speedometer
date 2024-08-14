@@ -4,13 +4,13 @@
 void COMService::extract(int start, int length, uint32_t &value)
 {
     // Variable to start at the first relevant byte
-    uint8_t bufferIndex{start / CHAR_BIT};
+    int bufferIndex{start / CHAR_BIT};
 
     // Variable to start at the first relevant bit
-    uint8_t bitOffset{start % CHAR_BIT};
+    int bitOffset{start % CHAR_BIT};
 
     // Variable to keep track of how many bits we've extracted
-    uint8_t extractedBitCount{0};
+    int extractedBitCount{0};
 
     mtx.lock();
     while (extractedBitCount < length)
@@ -43,7 +43,7 @@ void COMService::extract(int start, int length, int32_t &value)
 
     if ((value & (1 << (length - 1))) != 0)
     {
-        value |= (~0 << length);
+        value |= (~0U << length);
     }
 }
 
@@ -90,13 +90,4 @@ bool COMService::getRightLightStatus()
     extract(Setting::Signal::RightLight::Start, Setting::Signal::RightLight::Length, rightLight);
 
     return rightLight;
-}
-
-bool COMService::getWarningLightStatus()
-{
-    uint32_t warningLight{0};
-
-    extract(Setting::Signal::WarningLight::Start, Setting::Signal::WarningLight::Length, warningLight);
-
-    return warningLight;
 }

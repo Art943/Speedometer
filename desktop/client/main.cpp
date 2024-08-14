@@ -6,9 +6,9 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    // TCPservice service;
+    TCPService service;
 
-    Window gauge; // Now it will use the default argument for the parent
+    Window gauge{service}; // Now it will use the default argument for the parent
     gauge.show();
 
     return app.exec();

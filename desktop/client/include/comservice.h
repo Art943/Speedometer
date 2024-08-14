@@ -33,7 +33,6 @@ public:
 
     bool getLeftLightStatus();
     bool getRightLightStatus();
-    bool getWarningLightStatus();
 };
 
 #endif

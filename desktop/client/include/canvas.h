@@ -5,17 +5,20 @@
 
 class Canvas : public QWidget
 {
-
     int speedValue;
     int batteryValue;
     int tempValue;
     bool status;
     bool LeftLightstatus;
     bool RightLightstatus;
-    bool WarningLightstatus;
 
 public:
-    explicit Canvas(QWidget *parent = nullptr);
+    void setSpeedValue(int _speedValue);
+    void setBatteryValue(int _batteryValue);
+    void setTempValue(int _tempValue);
+    void setConnection(bool _status);
+    void setLeftLightStatus(bool _LeftLightstatus);
+    void setRightLightStatus(bool _RightLightstatus);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
