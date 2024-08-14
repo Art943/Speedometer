@@ -64,8 +64,3 @@ void COMService::setRightLightStatus(bool rightLight)
 {
     insert(Setting::Signal::RightLight::Start, Setting::Signal::RightLight::Length, rightLight);
 }
-
-void COMService::setWarningLightStatus(bool warningLight)
-{
-    insert(Setting::Signal::WarningLight::Start, Setting::Signal::WarningLight::Length, warningLight);
-}
