@@ -4,10 +4,10 @@
 void COMService::extract(int start, int length, uint32_t &value)
 {
     // Variable to start at the first relevant byte
-    uint8_t bufferIndex{start / CHAR_BIT};
+    int bufferIndex{start / CHAR_BIT};
 
     // Variable to start at the first relevant bit
-    uint8_t bitOffset{start % CHAR_BIT};
+    int bitOffset{start % CHAR_BIT};
 
     // Variable to keep track of how many bits we've extracted
     uint8_t extractedBitCount{0};
@@ -43,7 +43,7 @@ void COMService::extract(int start, int length, int32_t &value)
 
     if ((value & (1 << (length - 1))) != 0)
     {
-        value |= (~0 << length);
+        value |= ((unsigned int)~0 << length);
     }
 }
 

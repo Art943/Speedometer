@@ -1,0 +1,2 @@
+[0814/103026.983:ERROR:critical_section_with_debug_info.cc(35)] InitializeCriticalSectionEx: The parameter is incorrect. (0x57)
+[0814/103042.545:ERROR:critical_section_with_debug_info.cc(35)] InitializeCriticalSectionEx: The parameter is incorrect. (0x57)
