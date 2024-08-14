@@ -10,12 +10,10 @@
 
 class Window : public QDialog
 {
-    Q_OBJECT
-
 public:
-    Window(QDialog *parent = nullptr);
+    Window();
 
-private slots:
+private:
     void updateSpeedLabel(int value);
     void updateTemperatureLabel(int value);
     void updateBatteryLabel(int value);

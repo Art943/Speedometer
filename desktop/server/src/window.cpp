@@ -1,7 +1,6 @@
 #include "window.h"
 
-Window::Window(QDialog *parent)
-    : QDialog(parent),
+Window::Window() :
       gridLayout(this),
       speedLabel("Speed:", this),
       speedSlider(Qt::Horizontal, this),
@@ -24,18 +23,18 @@ Window::Window(QDialog *parent)
 
     // Fixed width for the main window
     setFixedWidth(600);
-	
+
     // Speed Slider
     speedSlider.setMinimum(0);
-    speedSlider.setMaximum(Setting::Signal::Speed::Max);
+    speedSlider.setMaximum(240);
     connect(&speedSlider, &QSlider::valueChanged, this, &Window::updateSpeedLabel);
 
     // Temperature Slider
     temperatureSlider.setMinimum(-60);
     temperatureSlider.setMaximum(60);
     connect(&temperatureSlider, &QSlider::valueChanged, this, &Window::updateTemperatureLabel);
-	
-	// Default values
+
+    // Default values
     updateTemperatureLabel(0); // Ensure display shows 0°C initially
 
     // Battery Slider
@@ -73,12 +72,12 @@ Window::Window(QDialog *parent)
     checkboxLayout.addWidget(&leftCheckBox);
     checkboxLayout.addWidget(&rightCheckBox);
     checkboxLayout.addWidget(&warningCheckBox);
-	gridLayout.addLayout(&checkboxLayout, row, 1, 1, 2);
+    gridLayout.addLayout(&checkboxLayout, row, 1, 1, 2);
 
     // Set the layout
     setLayout(&gridLayout);
-	gridLayout.setColumnStretch(1, 3); // Slider column Good chance that this is not needed
-	gridLayout.setColumnStretch(2, 1); // Current value column Good chance that this is not needed
+    gridLayout.setColumnStretch(1, 3); // Slider column Good chance that this is not needed
+    gridLayout.setColumnStretch(2, 1); // Current value column Good chance that this is not needed
 }
 
 void Window::updateSpeedLabel(int value)
@@ -100,12 +99,12 @@ void Window::onLeftCheckBoxToggled(bool checked)
 {
     if (checked)
     {
-        rightCheckBox.setEnabled(false); // Disable Right checkbox
+        rightCheckBox.setEnabled(false);             // Disable Right checkbox
         rightCheckBox.setStyleSheet("color: gray;"); // Gray out Right checkbox
     }
     else
     {
-        rightCheckBox.setEnabled(true); // Enable Right checkbox
+        rightCheckBox.setEnabled(true);  // Enable Right checkbox
         rightCheckBox.setStyleSheet(""); // Remove gray out effect
     }
 }
@@ -114,12 +113,12 @@ void Window::onRightCheckBoxToggled(bool checked)
 {
     if (checked)
     {
-        leftCheckBox.setEnabled(false); // Disable Left checkbox
+        leftCheckBox.setEnabled(false);             // Disable Left checkbox
         leftCheckBox.setStyleSheet("color: gray;"); // Gray out Left checkbox
     }
     else
     {
-        leftCheckBox.setEnabled(true); // Enable Left checkbox
+        leftCheckBox.setEnabled(true);  // Enable Left checkbox
         leftCheckBox.setStyleSheet(""); // Remove gray out effect
     }
 }
