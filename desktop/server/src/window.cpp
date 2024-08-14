@@ -1,25 +1,26 @@
 #include "window.h"
 
 Window::Window() : gridLayout(this),
-                   speedLabel("Speed:", this),
+                   speedLabel(Setting::Gui::Server::Signal::Speed::Label, this),
                    speedSlider(Qt::Horizontal, this),
                    currentSpeedLabel(QString::number(Setting::Signal::Speed::Min), this),
-                   temperatureLabel("Temperature:", this),
+                   temperatureLabel(Setting::Gui::Server::Signal::Temperature::Label, this),
                    temperatureSlider(Qt::Horizontal, this),
-                   batteryLabel("Battery Level:", this),
+                   batteryLabel(Setting::Gui::Server::Signal::Battery::Label, this),
                    batterySlider(Qt::Horizontal, this),
                    currentBatteryLabel(QString::number(Setting::Signal::BatteryLevel::Min), this),
-                   lightSignalsLabel("Light Signals:", this),
-                   leftCheckBox("Left", this),
-                   rightCheckBox("Right", this),
-                   warningCheckBox("Warning", this)
+                   lightSignalsLabel(Setting::Gui::Server::Signal::CheckBox::Label, this),
+                   leftCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonLeft, this),
+                   rightCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonRight, this),
+                   warningCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonWarning, this)
 {
 
-    currentSpeedLabel.setFixedWidth(50); // Fixed width in order to avoid the resizing of the slider.
+    currentSpeedLabel.setFixedWidth(Setting::Gui::Server::Signal::Speed::LabelFixWidth); // Fixed width in order to avoid the resizing of the slider.
 
-    setWindowTitle("Server"); // Title for the main window
-    setFixedWidth(600);       // Fixed width for the main window
-    setFixedHeight(125);
+    // Main window title and fixed Width-Height
+    setWindowTitle(Setting::Gui::Server::MainWindow::Title);
+    setFixedWidth(Setting::Gui::Server::MainWindow::FixWidth);
+    setFixedHeight(Setting::Gui::Server::MainWindow::FixHeight);
 
     // Speed Slider
     speedSlider.setMinimum(Setting::Signal::Speed::Min);
@@ -31,8 +32,8 @@ Window::Window() : gridLayout(this),
     temperatureSlider.setMaximum(Setting::Signal::Temperature::Max);
     connect(&temperatureSlider, &QSlider::valueChanged, this, &Window::updateTemperatureLabel);
 
-    // Initial temperature set to 0 instead of -60
-    updateTemperatureLabel(0);
+    // Initial temperature when gui starts
+    updateTemperatureLabel(Setting::Signal::Temperature::InitValue);
 
     // Battery Slider
     batterySlider.setMinimum(Setting::Signal::BatteryLevel::Min);
@@ -78,30 +79,30 @@ Window::Window() : gridLayout(this),
 
 void Window::updateSpeedLabel(int value)
 {
-    currentSpeedLabel.setText(QString::number(value) + " Kph");
+    currentSpeedLabel.setText(QString::number(value) + Setting::Gui::Server::Signal::Speed::Unit);
 }
 
 void Window::updateTemperatureLabel(int value)
 {
-    currentTemperatureLabel.setText(QString::number(value) + " °C");
+    currentTemperatureLabel.setText(QString::number(value) + Setting::Gui::Server::Signal::Temperature::Unit);
 }
 
 void Window::updateBatteryLabel(int value)
 {
-    currentBatteryLabel.setText(QString::number(value) + " %");
+    currentBatteryLabel.setText(QString::number(value) + Setting::Gui::Server::Signal::Battery::Unit);
 }
 
 void Window::onLeftCheckBoxToggled(bool checked)
 {
     if (checked)
     {
-        rightCheckBox.setEnabled(false);             // Disable Right checkbox
-        rightCheckBox.setStyleSheet("color: gray;"); // Gray out Right checkbox
+        rightCheckBox.setEnabled(false);                                                        // Disable Right checkbox
+        rightCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonDeactivated); // Gray out Right checkbox
     }
     else
     {
-        rightCheckBox.setEnabled(true);  // Enable Right checkbox
-        rightCheckBox.setStyleSheet(""); // Remove gray out effect
+        rightCheckBox.setEnabled(true);                                                   // Enable Right checkbox
+        rightCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonReset); // Remove gray out effect
     }
 }
 
@@ -109,12 +110,12 @@ void Window::onRightCheckBoxToggled(bool checked)
 {
     if (checked)
     {
-        leftCheckBox.setEnabled(false);             // Disable Left checkbox
-        leftCheckBox.setStyleSheet("color: gray;"); // Gray out Left checkbox
+        leftCheckBox.setEnabled(false);                                                        // Disable Left checkbox
+        leftCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonDeactivated); // Gray out Left checkbox
     }
     else
     {
-        leftCheckBox.setEnabled(true);  // Enable Left checkbox
-        leftCheckBox.setStyleSheet(""); // Remove gray out effect
+        leftCheckBox.setEnabled(true);                                                   // Enable Left checkbox
+        leftCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonReset); // Remove gray out effect
     }
 }
