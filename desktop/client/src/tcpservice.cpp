@@ -12,7 +12,7 @@ void TCPService::run(void)
 
     sockaddr_in servaddr;
 
-    // Assign IP and PORT
+    // Assign IP and PORT;
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(Setting::TCP::PORT);
     servaddr.sin_addr.s_addr = inet_addr(Setting::TCP::IP);
@@ -23,9 +23,10 @@ void TCPService::run(void)
         if (0 != connect(socketID, (sockaddr *)&servaddr, sizeof(servaddr)))
         {
             // Connection Failed
-            close(socketID);
+            // close(socketID);
             std::cout << "Connection to the server failed..." << std::endl;
-            std::exit(EXIT_FAILURE);
+            sleep(1);
+            // std::exit(EXIT_FAILURE);
         }
         else
         {
@@ -33,14 +34,14 @@ void TCPService::run(void)
             connectionStatus = true;
         }
 
-        while (isConnected())
+        while (connected())
         {
             uint8_t temp_buffer[Setting::Signal::BUFFER_LENGTH];
 
             // Receive data from the server and store it in buffer
             if (Setting::Signal::BUFFER_LENGTH != read(socketID, temp_buffer, Setting::Signal::BUFFER_LENGTH))
             {
-                // std::cout << "Failed to recieve buffer..." << std::endl;
+                std::cout << "Failed to recieve buffer..." << std::endl;
                 connectionStatus = false;
                 break;
             }

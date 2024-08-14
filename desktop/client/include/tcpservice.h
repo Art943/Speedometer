@@ -29,7 +29,6 @@ public:
         close(socketID);
         thrd.join();
     }
->>>>>>> 12-make-the-tcpip-service-class-for-the-client-based-on-comservice
 };
 
 #endif
