@@ -7,6 +7,7 @@
 #include <QCheckBox>
 #include <QGridLayout>
 #include <setting.h>
+#include <tcpservice.h>
 
 class Window : public QDialog
 {
@@ -46,6 +47,8 @@ private:
     QCheckBox rightCheckBox;
     QCheckBox warningCheckBox;
     QHBoxLayout checkboxLayout;
+
+    TCPService tcpService;
 };
 
 #endif
