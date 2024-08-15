@@ -21,7 +21,6 @@ namespace Setting
 
         namespace Temperature
         {
-            constexpr int InitValue{0};
             constexpr int Min{-60};
             constexpr int Max{60};
             constexpr int Start{8};
@@ -66,36 +65,14 @@ namespace Setting
                 constexpr int FixHeight{125};
             }
 
-            namespace Signal
+            namespace CheckBox
             {
-                namespace Speed
-                {
-                    const char *const Unit{" Kph"};
-                    const char *const Label{"Speed:"};
-                    constexpr int LabelFixWidth{50};
-                }
-
-                namespace Temperature
-                {
-                    const char *const Unit{" °C"};
-                    const char *const Label{"Temperature:"};
-                }
-
-                namespace Battery
-                {
-                    const char *const Unit{" %"};
-                    const char *const Label{"Battery Level:"};
-                }
-
-                namespace CheckBox
-                {
-                    const char *const Label{"Ligth Signals:"};
-                    const char *const ButtonLeft{"Left"};
-                    const char *const ButtonRight{"Right"};
-                    const char *const ButtonWarning{"Warning"};
-                    const char *const ButtonDeactivated{"color: gray;"};
-                    const char *const ButtonReset{""};
-                }
+                const char *const Label{"Ligth Signals:"};
+                const char *const ButtonLeft{"Left"};
+                const char *const ButtonRight{"Right"};
+                const char *const ButtonWarning{"Warning"};
+                const char *const ButtonDeactivated{"color: gray;"};
+                const char *const ButtonReset{""};
             }
         }
     }

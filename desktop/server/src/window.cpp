@@ -1,21 +1,25 @@
 #include "window.h"
 
-Window::Window(COMService &_comservice) : comservice{_comservice}, gridLayout(this),
-                                          speedLabel(Setting::Gui::Server::Signal::Speed::Label, this),
-                                          speedSlider(Qt::Horizontal, this),
-                                          currentSpeedLabel(QString::number(Setting::Signal::Speed::Min), this),
-                                          temperatureLabel(Setting::Gui::Server::Signal::Temperature::Label, this),
-                                          temperatureSlider(Qt::Horizontal, this),
-                                          batteryLabel(Setting::Gui::Server::Signal::Battery::Label, this),
-                                          batterySlider(Qt::Horizontal, this),
-                                          currentBatteryLabel(QString::number(Setting::Signal::BatteryLevel::Min), this),
-                                          lightSignalsLabel(Setting::Gui::Server::Signal::CheckBox::Label, this),
-                                          leftCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonLeft, this),
-                                          rightCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonRight, this),
-                                          warningCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonWarning, this)
+bool prevLeftLightStatus{false};
+bool prevRightLightStatus{false};
+
+Window::Window() : gridLayout(this),
+                   speedLabel("Speed:", this),
+                   speedSlider(Qt::Horizontal, this),
+                   currentSpeedLabel(QString::number(Setting::Signal::Speed::Min) + QString(" Kph"), this),
+                   temperatureLabel("Temperature:", this),
+                   temperatureSlider(Qt::Horizontal, this),
+                   currentTemperatureLabel(QString::number(0) + QString(" °C")),
+                   batteryLabel("Battery Level:", this),
+                   batterySlider(Qt::Horizontal, this),
+                   currentBatteryLabel(QString::number(Setting::Signal::BatteryLevel::Min) + QString(" %"), this),
+                   lightSignalsLabel(Setting::Gui::Server::CheckBox::Label, this),
+                   leftCheckBox(Setting::Gui::Server::CheckBox::ButtonLeft, this),
+                   rightCheckBox(Setting::Gui::Server::CheckBox::ButtonRight, this),
+                   warningCheckBox(Setting::Gui::Server::CheckBox::ButtonWarning, this)
 {
 
-    currentSpeedLabel.setFixedWidth(Setting::Gui::Server::Signal::Speed::LabelFixWidth); // Fixed width in order to avoid the resizing of the slider.
+    currentSpeedLabel.setFixedWidth(60); // Fixed width in order to avoid the resizing of the slider.
 
     // Main window title and fixed Width-Height
     setWindowTitle(Setting::Gui::Server::MainWindow::Title);
@@ -31,9 +35,6 @@ Window::Window(COMService &_comservice) : comservice{_comservice}, gridLayout(th
     temperatureSlider.setMinimum(Setting::Signal::Temperature::Min);
     temperatureSlider.setMaximum(Setting::Signal::Temperature::Max);
     connect(&temperatureSlider, &QSlider::valueChanged, this, &Window::updateTemperatureLabel);
-
-    // Initial temperature when gui starts
-    updateTemperatureLabel(Setting::Signal::Temperature::InitValue);
 
     // Battery Slider
     batterySlider.setMinimum(Setting::Signal::BatteryLevel::Min);
@@ -81,16 +82,19 @@ Window::Window(COMService &_comservice) : comservice{_comservice}, gridLayout(th
 void Window::updateSpeedLabel(int value)
 {
     comservice.setSpeed(value);
+    currentSpeedLabel.setText(QString::number(value) + QString(" Kph"));
 }
 
 void Window::updateTemperatureLabel(int value)
 {
     comservice.setTemperature(value);
+    currentTemperatureLabel.setText(QString::number(value) + QString(" °C"));
 }
 
 void Window::updateBatteryLabel(int value)
 {
     comservice.setBatteryLevel(value);
+    currentBatteryLabel.setText(QString::number(value) + QString(" %"));
 }
 
 void Window::onLeftCheckBoxToggled(bool checked)
@@ -99,13 +103,13 @@ void Window::onLeftCheckBoxToggled(bool checked)
 
     if (checked)
     {
-        rightCheckBox.setEnabled(false);                                                        // Disable Right checkbox
-        rightCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonDeactivated); // Gray out Right checkbox
+        rightCheckBox.setEnabled(false);                                                // Disable Right checkbox
+        rightCheckBox.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated); // Gray out Right checkbox
     }
     else
     {
-        rightCheckBox.setEnabled(true);                                                   // Enable Right checkbox
-        rightCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonReset); // Remove gray out effect
+        rightCheckBox.setEnabled(true);                                           // Enable Right checkbox
+        rightCheckBox.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset); // Remove gray out effect
     }
 }
 
@@ -115,17 +119,34 @@ void Window::onRightCheckBoxToggled(bool checked)
 
     if (checked)
     {
-        leftCheckBox.setEnabled(false);                                                        // Disable Left checkbox
-        leftCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonDeactivated); // Gray out Left checkbox
+        leftCheckBox.setEnabled(false);                                                // Disable Left checkbox
+        leftCheckBox.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated); // Gray out Left checkbox
     }
     else
     {
-        leftCheckBox.setEnabled(true);                                                   // Enable Left checkbox
-        leftCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonReset); // Remove gray out effect
+        leftCheckBox.setEnabled(true);                                           // Enable Left checkbox
+        leftCheckBox.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset); // Remove gray out effect
     }
 }
 
 void Window::onWarningCheckBoxToggled(bool checked)
 {
-    comservice.setWarningLightStatus(checked);
+    if (checked)
+    {
+        if (leftCheckBox.isEnabled() || rightCheckBox.isEnabled())
+        {
+            prevLeftLightStatus = leftCheckBox.isEnabled();
+            prevRightLightStatus = rightCheckBox.isEnabled();
+        }
+
+        comservice.setLeftLightStatus(checked);
+        comservice.setRightLightStatus(checked);
+    }
+    else
+    {
+        comservice.setLeftLightStatus(prevLeftLightStatus);
+        prevLeftLightStatus = false;
+        comservice.setRightLightStatus(prevRightLightStatus);
+        prevRightLightStatus = false;
+    }
 }

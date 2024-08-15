@@ -7,11 +7,11 @@
 #include <QCheckBox>
 #include <QGridLayout>
 #include "setting.h"
-#include "comservice.h"
+#include "tcpservice.h"
 
 class Window : public QDialog
 {
-    COMService &comservice;
+    TCPService comservice;
 
 public:
     Window();

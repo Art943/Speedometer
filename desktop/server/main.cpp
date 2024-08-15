@@ -4,10 +4,10 @@
 
 int main(int argc, char **argv)
 {
-    TCPService tcpService;
+    // TCPService tcpService;
     QApplication app(argc, argv);
 
-    Window server{tcpService};
+    Window server{};
     server.show();
 
     return app.exec();
