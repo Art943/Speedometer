@@ -2,6 +2,14 @@
 
 void TCPService::run(void)
 {
+    // Create socket and check
+    socketID = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+    if (socketID == -1)
+    {
+        std::cout << "Failed to create the socket..." << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+
     sockaddr_in servaddr;
 
     // Assign IP and PORT;
@@ -11,31 +19,38 @@ void TCPService::run(void)
 
     while (running)
     {
-        socketID = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
-
-        if (socketID > -1)
+        // Connect to the server
+        if (0 != connect(socketID, (sockaddr *)&servaddr, sizeof(servaddr)))
         {
+            // Connection Failed
+            // close(socketID);
+            std::cout << "Connection to the server failed..." << std::endl;
+            sleep(1);
+            // std::exit(EXIT_FAILURE);
+        }
+        else
+        {
+            // Connection Succeeded
             connectionStatus = true;
+        }
 
-            while (connectionStatus)
+        while (connected())
+        {
+            uint8_t temp_buffer[Setting::Signal::BUFFER_LENGTH];
+
+            // Receive data from the server and store it in buffer
+            if (Setting::Signal::BUFFER_LENGTH != read(socketID, temp_buffer, Setting::Signal::BUFFER_LENGTH))
             {
-                uint8_t temp_buffer[Setting::Signal::BUFFER_LENGTH];
-
-                // Receive data from the server and store it in buffer
-                if (Setting::Signal::BUFFER_LENGTH != read(socketID, temp_buffer, Setting::Signal::BUFFER_LENGTH))
-                {
-                    connectionStatus = false;
-                    break;
-                }
-
-                mtx.lock();
-                memcpy(buffer, temp_buffer, Setting::Signal::BUFFER_LENGTH);
-                mtx.unlock();
-
-                std::this_thread::sleep_for(std::chrono::milliseconds(20));
+                std::cout << "Failed to recieve buffer..." << std::endl;
+                connectionStatus = false;
+                break;
             }
 
-            close(socketID);
+            mtx.lock();
+            memcpy(buffer, temp_buffer, Setting::Signal::BUFFER_LENGTH);
+            mtx.unlock();
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
         }
     }
 }

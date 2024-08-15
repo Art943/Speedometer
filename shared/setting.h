@@ -3,11 +3,6 @@
 
 namespace Setting
 {
-    namespace TCP
-    {
-        constexpr int PORT{12345};
-        const char *const IP{"127.0.0.1"};
-    }
 
     namespace Signal
     {

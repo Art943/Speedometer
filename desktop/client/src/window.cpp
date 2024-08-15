@@ -16,12 +16,12 @@ Window::Window(COMService &com) : comservice(com)
 
 void Window::refreshCanvas()
 {
-    if (comservice.connectionStatus())
+    if (comservice.connected())
     {
         canvas.setSpeedValue(comservice.getSpeed());
         canvas.setBatteryValue(comservice.getBatteryLevel());
         canvas.setTempValue(comservice.getTemperature());
-        canvas.setConnection(comservice.connectionStatus());
+        canvas.setConnection(comservice.connected());
         canvas.setLeftLightStatus(comservice.getLeftLightStatus());
         canvas.setRightLightStatus(comservice.getRightLightStatus());
     }

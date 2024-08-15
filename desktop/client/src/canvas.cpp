@@ -1,7 +1,6 @@
 #include "canvas.h"
 #include <QPainter>
 #include <QFont>
-#include <QSound>
 
 void Canvas::setSpeedValue(int _speedValue)
 {
@@ -171,7 +170,6 @@ void Canvas::paintEvent(QPaintEvent *event)
         {
             painter.drawText(650, 140, QChar(0xe5c8)); // Left turn signal
             painter.drawText(50, 140, QChar(0xe5c4));  // Right turn signal
-            QSound::turnsignal();
             count++;
         }
         else if (RightLightstatus)
