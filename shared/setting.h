@@ -3,6 +3,12 @@
 
 namespace Setting
 {
+    namespace TCP
+    {
+        constexpr int PORT{12345};
+        const char *const IP{"127.0.0.1"};
+    }
+
     namespace Signal
     {
         namespace Speed
@@ -43,12 +49,6 @@ namespace Setting
             constexpr int Max{1};
             constexpr int Start{23};
             constexpr int Length{1};
-        }
-
-        namespace TCP
-        {
-            constexpr int PORT{12345};
-            const char *const IP{"127.0.0.1"};
         }
 
         constexpr int BUFFER_LENGTH{3};
