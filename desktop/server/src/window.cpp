@@ -14,9 +14,9 @@ Window::Window() : gridLayout(this),
                    batterySlider(Qt::Horizontal, this),
                    currentBatteryLabel(QString::number(Setting::Signal::BatteryLevel::Min) + QString(" %"), this),
                    lightSignalsLabel(Setting::Gui::Server::CheckBox::Label, this),
-                   leftCheckBox(Setting::Gui::Server::CheckBox::ButtonLeft, this),
-                   rightCheckBox(Setting::Gui::Server::CheckBox::ButtonRight, this),
-                   warningCheckBox(Setting::Gui::Server::CheckBox::ButtonWarning, this)
+                   leftLight(Setting::Gui::Server::CheckBox::ButtonLeft, this),
+                   rightLight(Setting::Gui::Server::CheckBox::ButtonRight, this),
+                   warningLight(Setting::Gui::Server::CheckBox::ButtonWarning, this)
 {
 
     currentSpeedLabel.setFixedWidth(60); // Fixed width in order to avoid the resizing of the slider.
@@ -42,9 +42,9 @@ Window::Window() : gridLayout(this),
     connect(&batterySlider, &QSlider::valueChanged, this, &Window::updateBatteryLabel);
 
     // Checkboxes
-    connect(&leftCheckBox, &QCheckBox::toggled, this, &Window::onLeftCheckBoxToggled);
-    connect(&rightCheckBox, &QCheckBox::toggled, this, &Window::onRightCheckBoxToggled);
-    connect(&warningCheckBox, &QCheckBox::toggled, this, &Window::onWarningCheckBoxToggled);
+    connect(&leftLight, &QCheckBox::toggled, this, &Window::onLeftLightToggled);
+    connect(&rightLight, &QCheckBox::toggled, this, &Window::onRightLightToggled);
+    connect(&warningLight, &QCheckBox::toggled, this, &Window::onWarningLightToggled);
 
     int row = 0; // The row index improves the readability of the code
 
@@ -68,9 +68,9 @@ Window::Window() : gridLayout(this),
 
     // Add Checkboxes to the grid layout
     gridLayout.addWidget(&lightSignalsLabel, row, 0, 1, 1, Qt::AlignRight);
-    checkboxLayout.addWidget(&leftCheckBox);
-    checkboxLayout.addWidget(&rightCheckBox);
-    checkboxLayout.addWidget(&warningCheckBox);
+    checkboxLayout.addWidget(&leftLight);
+    checkboxLayout.addWidget(&rightLight);
+    checkboxLayout.addWidget(&warningLight);
     gridLayout.addLayout(&checkboxLayout, row, 1, 1, 2);
 
     // Set the layout
@@ -97,56 +97,58 @@ void Window::updateBatteryLabel(int value)
     currentBatteryLabel.setText(QString::number(value) + QString(" %"));
 }
 
-void Window::onLeftCheckBoxToggled(bool checked)
+void Window::onLeftLightToggled(bool checked)
 {
     comservice.setLeftLightStatus(checked);
+    prevLeftLightStatus = checked;
 
     if (checked)
     {
-        rightCheckBox.setEnabled(false);                                                // Disable Right checkbox
-        rightCheckBox.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated); // Gray out Right checkbox
+        rightLight.setEnabled(false);                                                // Disable Right checkbox
+        rightLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated); // Gray out Right checkbox
     }
     else
     {
-        rightCheckBox.setEnabled(true);                                           // Enable Right checkbox
-        rightCheckBox.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset); // Remove gray out effect
+        rightLight.setEnabled(true);                                           // Enable Right checkbox
+        rightLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset); // Remove gray out effect
     }
 }
 
-void Window::onRightCheckBoxToggled(bool checked)
+void Window::onRightLightToggled(bool checked)
 {
     comservice.setRightLightStatus(checked);
+    prevRightLightStatus = checked;
 
     if (checked)
     {
-        leftCheckBox.setEnabled(false);                                                // Disable Left checkbox
-        leftCheckBox.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated); // Gray out Left checkbox
+        leftLight.setEnabled(false);                                                // Disable Left checkbox
+        leftLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated); // Gray out Left checkbox
     }
     else
     {
-        leftCheckBox.setEnabled(true);                                           // Enable Left checkbox
-        leftCheckBox.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset); // Remove gray out effect
+        leftLight.setEnabled(true);                                           // Enable Left checkbox
+        leftLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset); // Remove gray out effect
     }
 }
 
-void Window::onWarningCheckBoxToggled(bool checked)
+void Window::onWarningLightToggled(bool checked)
 {
     if (checked)
     {
-        if (leftCheckBox.isEnabled() || rightCheckBox.isEnabled())
-        {
-            prevLeftLightStatus = leftCheckBox.isEnabled();
-            prevRightLightStatus = rightCheckBox.isEnabled();
-        }
-
         comservice.setLeftLightStatus(checked);
         comservice.setRightLightStatus(checked);
     }
     else
     {
-        comservice.setLeftLightStatus(prevLeftLightStatus);
-        prevLeftLightStatus = false;
-        comservice.setRightLightStatus(prevRightLightStatus);
-        prevRightLightStatus = false;
+        if (prevLeftLightStatus || prevRightLightStatus)
+        {
+            comservice.setLeftLightStatus(prevLeftLightStatus);
+            comservice.setRightLightStatus(prevRightLightStatus);
+        }
+        else
+        {
+            comservice.setLeftLightStatus(checked);
+            comservice.setRightLightStatus(checked);
+        }
     }
 }

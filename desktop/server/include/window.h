@@ -20,9 +20,9 @@ private:
     void updateSpeedLabel(int value);
     void updateTemperatureLabel(int value);
     void updateBatteryLabel(int value);
-    void onLeftCheckBoxToggled(bool checked);
-    void onRightCheckBoxToggled(bool checked);
-    void onWarningCheckBoxToggled(bool checked);
+    void onLeftLightToggled(bool checked);
+    void onRightLightToggled(bool checked);
+    void onWarningLightToggled(bool checked);
 
 private:
     // Layout
@@ -45,9 +45,9 @@ private:
 
     // Light signal
     QLabel lightSignalsLabel;
-    QCheckBox leftCheckBox;
-    QCheckBox rightCheckBox;
-    QCheckBox warningCheckBox;
+    QCheckBox leftLight;
+    QCheckBox rightLight;
+    QCheckBox warningLight;
     QHBoxLayout checkboxLayout;
 };
 
