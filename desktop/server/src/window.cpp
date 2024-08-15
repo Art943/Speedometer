@@ -80,64 +80,52 @@ Window::Window() : gridLayout(this),
 
 void Window::updateSpeedLabel(int value)
 {
-    currentSpeedLabel.setText(QString::number(value) + Setting::Gui::Server::Signal::Speed::Unit);
+    COMService::setSpeed(value);
 }
 
 void Window::updateTemperatureLabel(int value)
 {
-    currentTemperatureLabel.setText(QString::number(value) + Setting::Gui::Server::Signal::Temperature::Unit);
+    COMService::setTemperature(value);
 }
 
 void Window::updateBatteryLabel(int value)
 {
-    currentBatteryLabel.setText(QString::number(value) + Setting::Gui::Server::Signal::Battery::Unit);
+    COMService::setBatteryLevel(value);
 }
 
 void Window::onLeftCheckBoxToggled(bool checked)
 {
-    QByteArray data;
+    COMService::setLeftLightStatus(checked);
 
     if (checked)
     {
-        data = "LeftLightChecked";
         rightCheckBox.setEnabled(false);                                                        // Disable Right checkbox
         rightCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonDeactivated); // Gray out Right checkbox
     }
     else
     {
-        data = "LeftLigtReleased";
         rightCheckBox.setEnabled(true);                                                   // Enable Right checkbox
         rightCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonReset); // Remove gray out effect
     }
-
-    tcpService.send.Message(data);
 }
 
 void Window::onRightCheckBoxToggled(bool checked)
 {
-    QByteArray data;
+    COMService::setRightLightStatus(checked);
 
     if (checked)
     {
-        data = "RightLightChecked";
         leftCheckBox.setEnabled(false);                                                        // Disable Left checkbox
         leftCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonDeactivated); // Gray out Left checkbox
     }
     else
     {
-        data = "RightLightReleased";
         leftCheckBox.setEnabled(true);                                                   // Enable Left checkbox
         leftCheckBox.setStyleSheet(Setting::Gui::Server::Signal::CheckBox::ButtonReset); // Remove gray out effect
     }
-
-    tcpService.send.Message(data);
 }
 
 void Window::onWarningCheckBoxToggled(bool checked)
 {
-    QByteArray data;
-
-    (checked == true) ? data = "Warning ON\n" : data = "Warning OFF\n";
-
-    tcpService.send.Message(data);
+    COMService::setWarningLightStatus(checked);
 }
