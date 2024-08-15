@@ -4,13 +4,13 @@
 void COMService::insert(int start, int length, uint32_t value)
 {
     // Variable to start at the first relevant byte
-    uint8_t bufferIndex{start / CHAR_BIT};
+    int bufferIndex{start / CHAR_BIT};
 
     // Variable to start at the first relevant bit
-    uint8_t bitOffset{start % CHAR_BIT};
+    int bitOffset{start % CHAR_BIT};
 
     // Variable to keep track of how many bits we've cleared/inserted
-    uint8_t insertedBits{0};
+    int insertedBits{0};
 
     mtx.lock();
 
