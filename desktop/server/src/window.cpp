@@ -80,22 +80,22 @@ Window::Window() : gridLayout(this),
 
 void Window::updateSpeedLabel(int value)
 {
-    COMService::setSpeed(value);
+    comservice.setSpeed(value);
 }
 
 void Window::updateTemperatureLabel(int value)
 {
-    COMService::setTemperature(value);
+    comservice.setTemperature(value);
 }
 
 void Window::updateBatteryLabel(int value)
 {
-    COMService::setBatteryLevel(value);
+    comservice.setBatteryLevel(value);
 }
 
 void Window::onLeftCheckBoxToggled(bool checked)
 {
-    COMService::setLeftLightStatus(checked);
+    comservice.setLeftLightStatus(checked);
 
     if (checked)
     {
@@ -111,7 +111,7 @@ void Window::onLeftCheckBoxToggled(bool checked)
 
 void Window::onRightCheckBoxToggled(bool checked)
 {
-    COMService::setRightLightStatus(checked);
+    comservice.setRightLightStatus(checked);
 
     if (checked)
     {
@@ -127,5 +127,5 @@ void Window::onRightCheckBoxToggled(bool checked)
 
 void Window::onWarningCheckBoxToggled(bool checked)
 {
-    COMService::setWarningLightStatus(checked);
+    comservice.setWarningLightStatus(checked);
 }

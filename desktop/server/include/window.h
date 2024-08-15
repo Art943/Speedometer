@@ -6,10 +6,13 @@
 #include <QSlider>
 #include <QCheckBox>
 #include <QGridLayout>
-#include <setting.h>
+#include "setting.h"
+#include "comservice.h"
 
 class Window : public QDialog
 {
+    COMService &comservice;
+
 public:
     Window();
 
