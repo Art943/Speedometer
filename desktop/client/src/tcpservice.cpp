@@ -9,17 +9,19 @@ void TCPService::run(void)
     servaddr.sin_port = htons(Setting::TCP::PORT);
     servaddr.sin_addr.s_addr = inet_addr(Setting::TCP::IP);
 
-    // Connect to the server
-    if (0 != connect(socketID, (sockaddr *)&servaddr, sizeof(servaddr)))
-    {
-        close(socketID);
-        std::cout << "Connection to the server failed..." << std::endl;
-        std::exit(EXIT_FAILURE);
-    }
-
     while (running)
     {
         socketID = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+
+        // Connect to the server
+        if (0 != connect(socketID, (sockaddr *)&servaddr, sizeof(servaddr)))
+        {
+            close(socketID);
+            socketID = -1;
+            std::cout << "Trying to connect to server..." << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            continue;
+        }
 
         if (socketID > -1)
         {
