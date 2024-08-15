@@ -21,6 +21,7 @@ class TCPService : public COMService
     void run(void) override;
 
 public:
+    TCPService();
     ~TCPService()
     {
         running = false;

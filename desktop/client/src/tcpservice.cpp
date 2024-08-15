@@ -13,11 +13,21 @@ void TCPService::run(void)
     {
         socketID = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
 
+        // Connect to the server
+        if (0 != connect(socketID, (sockaddr *)&servaddr, sizeof(servaddr)))
+        {
+            close(socketID);
+            socketID = -1;
+            std::cout << "Trying to connect to server..." << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            continue;
+        }
+
         if (socketID > -1)
         {
             connectionStatus = true;
 
-            while (connectionStatus)
+            while (connected())
             {
                 uint8_t temp_buffer[Setting::Signal::BUFFER_LENGTH];
 

@@ -15,7 +15,7 @@ private:
     void extract(int start, int length, int32_t &value);
 
 protected:
-    uint8_t buffer[Setting::Signal::BUFFER_LENGTH];
+    uint8_t buffer[Setting::Signal::BUFFER_LENGTH]{0, 0, 0};
     std::atomic<bool> connectionStatus{false};
     std::mutex mtx;
 
