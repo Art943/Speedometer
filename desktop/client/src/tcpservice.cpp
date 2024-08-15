@@ -19,18 +19,20 @@ void TCPService::run(void)
 
     while (running)
     {
+        socketID = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+
         // Connect to the server
         if (0 != connect(socketID, (sockaddr *)&servaddr, sizeof(servaddr)))
         {
-            // Connection Failed
-            // close(socketID);
-            std::cout << "Connection to the server failed..." << std::endl;
-            sleep(1);
-            // std::exit(EXIT_FAILURE);
+            close(socketID);
+            socketID = -1;
+            std::cout << "Trying to connect to server..." << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            continue;
         }
-        else
+
+        if (socketID > -1)
         {
-            // Connection Succeeded
             connectionStatus = true;
         }
 
