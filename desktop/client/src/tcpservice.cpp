@@ -2,12 +2,12 @@
 
 void TCPService::run(void)
 {
-    sockaddr_in servaddr;
+    // sockaddr_in servaddr;
 
     // Assign IP and PORT
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(Setting::TCP::PORT);
-    servaddr.sin_addr.s_addr = inet_addr(Setting::TCP::IP);
+    // servaddr.sin_family = AF_INET;
+    // servaddr.sin_port = htons(Setting::TCP::PORT);
+    // servaddr.sin_addr.s_addr = inet_addr(Setting::TCP::IP);
 
     while (running)
     {

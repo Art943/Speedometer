@@ -1,18 +1,18 @@
 #include "window.h"
 
-Window::Window() : gridLayout(this),
-                   speedLabel(Setting::Gui::Server::Signal::Speed::Label, this),
-                   speedSlider(Qt::Horizontal, this),
-                   currentSpeedLabel(QString::number(Setting::Signal::Speed::Min), this),
-                   temperatureLabel(Setting::Gui::Server::Signal::Temperature::Label, this),
-                   temperatureSlider(Qt::Horizontal, this),
-                   batteryLabel(Setting::Gui::Server::Signal::Battery::Label, this),
-                   batterySlider(Qt::Horizontal, this),
-                   currentBatteryLabel(QString::number(Setting::Signal::BatteryLevel::Min), this),
-                   lightSignalsLabel(Setting::Gui::Server::Signal::CheckBox::Label, this),
-                   leftCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonLeft, this),
-                   rightCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonRight, this),
-                   warningCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonWarning, this)
+Window::Window(COMService &_comservice) : comservice{_comservice}, gridLayout(this),
+                                          speedLabel(Setting::Gui::Server::Signal::Speed::Label, this),
+                                          speedSlider(Qt::Horizontal, this),
+                                          currentSpeedLabel(QString::number(Setting::Signal::Speed::Min), this),
+                                          temperatureLabel(Setting::Gui::Server::Signal::Temperature::Label, this),
+                                          temperatureSlider(Qt::Horizontal, this),
+                                          batteryLabel(Setting::Gui::Server::Signal::Battery::Label, this),
+                                          batterySlider(Qt::Horizontal, this),
+                                          currentBatteryLabel(QString::number(Setting::Signal::BatteryLevel::Min), this),
+                                          lightSignalsLabel(Setting::Gui::Server::Signal::CheckBox::Label, this),
+                                          leftCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonLeft, this),
+                                          rightCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonRight, this),
+                                          warningCheckBox(Setting::Gui::Server::Signal::CheckBox::ButtonWarning, this)
 {
 
     currentSpeedLabel.setFixedWidth(Setting::Gui::Server::Signal::Speed::LabelFixWidth); // Fixed width in order to avoid the resizing of the slider.
