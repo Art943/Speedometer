@@ -27,7 +27,7 @@ void TCPService::run(void)
         {
             connectionStatus = true;
 
-            while (connectionStatus)
+            while (connected())
             {
                 uint8_t temp_buffer[Setting::Signal::BUFFER_LENGTH];
 
