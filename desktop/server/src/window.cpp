@@ -1,7 +1,9 @@
 #include "window.h"
+#include <iostream>
 
 bool prevLeftLightStatus{false};
 bool prevRightLightStatus{false};
+bool warningLightStatus{false};
 
 Window::Window() : gridLayout(this),
                    speedLabel("Speed:", this),
@@ -97,37 +99,41 @@ void Window::updateBatteryLabel(int value)
     currentBatteryLabel.setText(QString::number(value) + QString(" %"));
 }
 
-void Window::onLeftLightToggled(bool checked)
+void Window::onLeftLightToggled(bool checked) // LEFT
 {
-    comservice.setLeftLightStatus(checked);
-    prevLeftLightStatus = checked;
+    if (!warningLight.isChecked())
+    {
+        comservice.setLeftLightStatus(checked);
+    }
 
     if (checked)
     {
-        rightLight.setEnabled(false);                                                // Disable Right checkbox
-        rightLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated); // Gray out Right checkbox
+        rightLight.setEnabled(false);
+        rightLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated);
     }
     else
     {
-        rightLight.setEnabled(true);                                           // Enable Right checkbox
-        rightLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset); // Remove gray out effect
+        rightLight.setEnabled(true);
+        rightLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset);
     }
 }
 
-void Window::onRightLightToggled(bool checked)
+void Window::onRightLightToggled(bool checked) // RIGHT
 {
-    comservice.setRightLightStatus(checked);
-    prevRightLightStatus = checked;
+    if (!warningLight.isChecked())
+    {
+        comservice.setRightLightStatus(checked);
+    }
 
     if (checked)
     {
-        leftLight.setEnabled(false);                                                // Disable Left checkbox
-        leftLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated); // Gray out Left checkbox
+        leftLight.setEnabled(false);
+        leftLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated);
     }
     else
     {
-        leftLight.setEnabled(true);                                           // Enable Left checkbox
-        leftLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset); // Remove gray out effect
+        leftLight.setEnabled(true);
+        leftLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset);
     }
 }
 
@@ -140,15 +146,20 @@ void Window::onWarningLightToggled(bool checked)
     }
     else
     {
-        if (prevLeftLightStatus || prevRightLightStatus)
+        if (!leftLight.isEnabled())
         {
-            comservice.setLeftLightStatus(prevLeftLightStatus);
-            comservice.setRightLightStatus(prevRightLightStatus);
+            comservice.setLeftLightStatus(false);
+            comservice.setRightLightStatus(true);
+        }
+        else if (!rightLight.isEnabled())
+        {
+            comservice.setLeftLightStatus(true);
+            comservice.setRightLightStatus(false);
         }
         else
         {
-            comservice.setLeftLightStatus(checked);
-            comservice.setRightLightStatus(checked);
+            comservice.setLeftLightStatus(false);
+            comservice.setRightLightStatus(false);
         }
     }
 }
