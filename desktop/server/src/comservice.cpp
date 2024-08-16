@@ -42,6 +42,7 @@ void COMService::insert(int start, int length, uint32_t value)
 
 void COMService::setSpeed(uint32_t speed)
 {
+
     insert(Setting::Signal::Speed::Start, Setting::Signal::Speed::Length, speed);
 }
 
