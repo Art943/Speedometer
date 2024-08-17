@@ -7,7 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Multimedia SerialPort)
 
 # if(CMAKE_HOST_SYSTEM MATCHES Linux)
 #    execute_process(COMMAND bash -c "if [ ! -f $ENV{HOME}/.local/share/fonts/MaterialIcons.ttf ]; then mkdir -p $ENV{HOME}/.local/share/fonts/ && cp ./desktop/client/res/font.ttf $ENV{HOME}/.local/share/fonts/MaterialIcons.ttf; fi")
@@ -23,8 +23,8 @@ endif()
 add_executable(client desktop/client/main.cpp desktop/client/src/canvas.cpp desktop/client/src/comservice.cpp desktop/client/src/tcpservice.cpp desktop/client/src/window.cpp)
 
 target_include_directories(client PUBLIC desktop/client/include ${CMAKE_SOURCE_DIR}/shared)
-target_link_libraries(client PUBLIC Qt6::Core Qt6::Widgets)
+target_link_libraries(client PUBLIC Qt6::Core Qt6::Widgets Qt6::Multimedia)
 
 add_executable(server desktop/server/main.cpp desktop/server/src/comservice.cpp desktop/server/src/tcpservice.cpp desktop/server/src/window.cpp)
-target_include_directories(server PUBLIC desktop/server/include)
+target_include_directories(server PUBLIC desktop/server/include ${CMAKE_SOURCE_DIR}/shared)
 target_link_libraries(server PUBLIC Qt6::Core Qt6::Widgets)

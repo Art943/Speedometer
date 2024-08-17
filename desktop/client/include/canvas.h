@@ -2,6 +2,10 @@
 #define CANVAS_H
 
 #include <QWidget>
+#include <QFont>
+#include <QPainter>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 class Canvas : public QWidget
 {
@@ -12,9 +16,12 @@ class Canvas : public QWidget
     bool LeftLightstatus;
     bool RightLightstatus;
     int count = 0;
+    QMediaPlayer turnSignalPlayer;
+    QAudioOutput audioOutput;
 
 public:
-    void setSpeedValue(int _speedValue);
+    void
+    setSpeedValue(int _speedValue);
     void setBatteryValue(int _batteryValue);
     void setTempValue(int _tempValue);
     void setConnection(bool _status);
