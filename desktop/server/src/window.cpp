@@ -1,5 +1,4 @@
 #include "window.h"
-#include <iostream>
 
 bool prevLeftLightStatus{false};
 bool prevRightLightStatus{false};
