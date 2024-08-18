@@ -22,9 +22,25 @@ endif()
 
 add_executable(client desktop/client/main.cpp desktop/client/src/canvas.cpp desktop/client/src/comservice.cpp desktop/client/src/tcpservice.cpp desktop/client/src/window.cpp)
 
-target_include_directories(client PUBLIC desktop/client/include ${CMAKE_SOURCE_DIR}/shared)
+target_include_directories(client PUBLIC desktop/client/include)
 target_link_libraries(client PUBLIC Qt6::Core Qt6::Widgets)
 
 add_executable(server desktop/server/main.cpp desktop/server/src/comservice.cpp desktop/server/src/tcpservice.cpp desktop/server/src/window.cpp)
 target_include_directories(server PUBLIC desktop/server/include)
 target_link_libraries(server PUBLIC Qt6::Core Qt6::Widgets)
+
+INCLUDE_DIRECTORIES(shared)
+
+if(CAN=ON)
+   add_custom_target(esp32_client_upload ALL
+   COMMAND gnome-terminal -- bash -c "pio run -t upload -e esp32-evb --upload-port /dev/ttyUSB0"
+   COMMAND gnome-terminal -- bash -c "pio device monitor --port /dev/ttyUSB0"
+   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/esp32/client
+   )
+
+   add_custom_target(esp32_server_upload ALL
+   COMMAND gnome-terminal -- bash -c "pio run -t upload -e esp32-evb --upload-port /dev/ttyUSB1"
+   COMMAND gnome-terminal -- bash -c "pio device monitor --port /dev/ttyUSB1"
+   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/esp32/server
+   )
+endif()
