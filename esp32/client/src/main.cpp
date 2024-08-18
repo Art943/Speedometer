@@ -2,6 +2,9 @@
 #include <CAN.h>
 #include <CAN_config.h>
 
+constexpr MSG_ID = 0x100;
+constexpr BUFF_SIZE = 4;
+
 CAN_device_t CAN_cfg;
 
 void setup()
@@ -19,4 +22,18 @@ void setup()
 
 void loop()
 {
+    CAN_frame_t frame{0};
+
+    if (pdTRUE == xQueueReceive(CAN_cfg.rx_queue, &frame, portMAX_DELAY))
+    {
+        if (frame.MsgID == MSG_ID)
+        {
+            for (int i = 0; i < frame.FIR.B.DLC; i++)
+            {
+                Serial.write(frame.data.u8[i]); // Feed to the data from CAN to the client via serial
+            }
+        }
+
+        CAN_write_frame(&frame);
+    }
 }
