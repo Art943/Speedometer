@@ -1,0 +1,7 @@
+[0814/103026.983:ERROR:critical_section_with_debug_info.cc(35)] InitializeCriticalSectionEx: The parameter is incorrect. (0x57)
+[0814/103042.545:ERROR:critical_section_with_debug_info.cc(35)] InitializeCriticalSectionEx: The parameter is incorrect. (0x57)
+[0816/100827.817:ERROR:critical_section_with_debug_info.cc(35)] InitializeCriticalSectionEx: The parameter is incorrect. (0x57)
+[0816/113827.175:ERROR:critical_section_with_debug_info.cc(35)] InitializeCriticalSectionEx: The parameter is incorrect. (0x57)
+[0816/114038.630:ERROR:critical_section_with_debug_info.cc(35)] InitializeCriticalSectionEx: The parameter is incorrect. (0x57)
+[0816/114059.504:ERROR:critical_section_with_debug_info.cc(35)] InitializeCriticalSectionEx: The parameter is incorrect. (0x57)
+[0816/114139.895:ERROR:critical_section_with_debug_info.cc(35)] InitializeCriticalSectionEx: The parameter is incorrect. (0x57)
