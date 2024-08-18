@@ -48,11 +48,36 @@ namespace Setting
 
         constexpr int BUFFER_LENGTH{3};
     }
-    namespace TCP
+
+
+    namespace Gui
+    {
+        namespace Server
+        {
+            namespace MainWindow
+            {
+                const char *const Title{"Server"};
+                constexpr int FixWidth{600};
+                constexpr int FixHeight{125};
+            }
+
+            namespace CheckBox
+            {
+                const char *const Label{"Ligth Signals:"};
+                const char *const ButtonLeft{"Left"};
+                const char *const ButtonRight{"Right"};
+                const char *const ButtonWarning{"Warning"};
+                const char *const ButtonDeactivated{"color: gray;"};
+                const char *const ButtonReset{""};
+            }
+        }
+    }
+     namespace TCP
     {
         constexpr int INTERVAL{40};
         constexpr int PORT{12345};
         const char *const IP{"127.0.0.1"};
+
     }
 }
 
