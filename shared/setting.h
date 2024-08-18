@@ -3,11 +3,6 @@
 
 namespace Setting
 {
-    namespace TCP
-    {
-        constexpr int PORT{12345};
-        const char *const IP{"127.0.0.1"};
-    }
 
     namespace Signal
     {
@@ -54,6 +49,7 @@ namespace Setting
         constexpr int BUFFER_LENGTH{3};
     }
 
+
     namespace Gui
     {
         namespace Server
@@ -75,6 +71,13 @@ namespace Setting
                 const char *const ButtonReset{""};
             }
         }
+    }
+     namespace TCP
+    {
+        constexpr int INTERVAL{40};
+        constexpr int PORT{12345};
+        const char *const IP{"127.0.0.1"};
+
     }
 }
 
