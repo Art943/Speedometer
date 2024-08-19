@@ -18,12 +18,28 @@ endif()
 
 set(COMM_PROTOCOL "TCP" CACHE STRING "Communication protocol to use (TCP or CAN)")
 
+# CAN Communication
 if(COMM_PROTOCOL STREQUAL "CAN")
     set(SERVER_SRC desktop/server/src/canservice.cpp)
     set(CLIENT_SRC desktop/client/src/canservice.cpp)
     set(SERVER_LIBS Qt6::SerialPort)
     set(CLIENT_LIBS Qt6::SerialPort)
     add_compile_definitions(COMM_CAN)
+
+    # Custom targets for uploading to microcontrollers
+    add_custom_target(upload_client
+        COMMAND gnome-terminal -- sh -c "pio run --target upload --upload-port /dev/ttyUSB0"
+        COMMENT "Uploading client to node1 (/dev/ttyUSB0)"
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/esp32/client
+    )
+
+    add_custom_target(upload_server
+        COMMAND gnome-terminal -- sh -c "pio run --target upload --upload-port /dev/ttyUSB1"
+        COMMENT "Uploading server to node2 (/dev/ttyUSB1)"
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/esp32/server
+    )
+
+# TCP Communication
 else()
     set(SERVER_SRC desktop/server/src/tcpservice.cpp)
     set(CLIENT_SRC desktop/client/src/tcpservice.cpp)
