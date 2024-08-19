@@ -49,7 +49,6 @@ namespace Setting
         constexpr int BUFFER_LENGTH{3};
     }
 
-
     namespace Gui
     {
         namespace Server
@@ -72,7 +71,15 @@ namespace Setting
             }
         }
     }
-     namespace TCP
+
+    namespace CAN
+    {
+        constexpr int Baudrate{115200};
+        const char *const ClientPort{"/dev/ttyUSB0"};
+        const char *const ServerPort{"/dev/ttyUSB1"};
+    }
+
+    namespace TCP
     {
         constexpr int INTERVAL{40};
         constexpr int PORT{12345};
