@@ -4,20 +4,21 @@ bool prevLeftLightStatus{false};
 bool prevRightLightStatus{false};
 bool warningLightStatus{false};
 
-Window::Window() : gridLayout(this),
-                   speedLabel("Speed:", this),
-                   speedSlider(Qt::Horizontal, this),
-                   currentSpeedLabel(QString::number(Setting::Signal::Speed::Min) + QString(" Kph"), this),
-                   temperatureLabel("Temperature:", this),
-                   temperatureSlider(Qt::Horizontal, this),
-                   currentTemperatureLabel(QString::number(0) + QString(" °C")),
-                   batteryLabel("Battery Level:", this),
-                   batterySlider(Qt::Horizontal, this),
-                   currentBatteryLabel(QString::number(Setting::Signal::BatteryLevel::Min) + QString(" %"), this),
-                   lightSignalsLabel(Setting::Gui::Server::CheckBox::Label, this),
-                   leftLight(Setting::Gui::Server::CheckBox::ButtonLeft, this),
-                   rightLight(Setting::Gui::Server::CheckBox::ButtonRight, this),
-                   warningLight(Setting::Gui::Server::CheckBox::ButtonWarning, this)
+Window::Window(COMService &comservice_) : comservice(comservice_),
+                                          gridLayout(this),
+                                          speedLabel("Speed:", this),
+                                          speedSlider(Qt::Horizontal, this),
+                                          currentSpeedLabel(QString::number(Setting::Signal::Speed::Min) + QString(" Kph"), this),
+                                          temperatureLabel("Temperature:", this),
+                                          temperatureSlider(Qt::Horizontal, this),
+                                          currentTemperatureLabel(QString::number(0) + QString(" °C")),
+                                          batteryLabel("Battery Level:", this),
+                                          batterySlider(Qt::Horizontal, this),
+                                          currentBatteryLabel(QString::number(Setting::Signal::BatteryLevel::Min) + QString(" %"), this),
+                                          lightSignalsLabel(Setting::Gui::Server::CheckBox::Label, this),
+                                          leftLight(Setting::Gui::Server::CheckBox::ButtonLeft, this),
+                                          rightLight(Setting::Gui::Server::CheckBox::ButtonRight, this),
+                                          warningLight(Setting::Gui::Server::CheckBox::ButtonWarning, this)
 {
 
     currentSpeedLabel.setFixedWidth(60); // Fixed width in order to avoid the resizing of the slider.
