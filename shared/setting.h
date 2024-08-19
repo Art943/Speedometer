@@ -3,6 +3,13 @@
 
 namespace Setting
 {
+    namespace CAN
+    {
+        constexpr int Baudrate{115200};
+        const char *const ClientPort{"/dev/ttyUSB1"};
+        const char *const ServerPort{"/dev/ttyUSB1"};
+    }
+
     namespace TCP
     {
         constexpr int PORT{12345};
