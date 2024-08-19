@@ -7,14 +7,14 @@
 #include <QCheckBox>
 #include <QGridLayout>
 #include "setting.h"
-#include "tcpservice.h"
+#include "comservice.h"
 
 class Window : public QDialog
 {
-    TCPService comservice;
+    COMService &comservice;
 
 public:
-    Window();
+    Window(COMService &comservice_);
 
 private:
     void updateSpeedLabel(int value);

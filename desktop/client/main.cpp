@@ -1,15 +1,24 @@
-#include <QApplication>
 #include "window.h"
-#include "tcpservice.h"
+#include <QApplication>
 
-int main(int argc, char *argv[])
+#ifdef COMM_CAN
+#include "canservice.h"
+#else
+#include "tcpservice.h"
+#endif
+
+int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    TCPService service;
+#ifdef COMM_CAN
+    CANService comservice;
+#else
+    TCPService comservice;
+#endif
 
-    Window gauge{service}; // Now it will use the default argument for the parent
-    gauge.show();
+    Window window(comservice);
+    window.show();
 
     return app.exec();
 }
