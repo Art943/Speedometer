@@ -10,6 +10,12 @@ CAN_device_t CAN_cfg;
 void setup()
 {
     Serial.begin(SETTING::CAN::Baudrate);
+    // Serial.begin(SETTING::CAN::Baudrate, SERIAL_8N1);
+    while (!Serial)
+    {
+        delay(10);
+    }
+    Serial.println("Ready to recieve data...");
 
     // Config the communication
     CAN_cfg.tx_pin_id = GPIO_NUM_5;
@@ -29,8 +35,33 @@ void loop()
     frame.FIR.B.FF = CAN_frame_std;                   // Indicates standard ll bits long frame
     frame.FIR.B.DLC = SETTING::Signal::BUFFER_LENGTH; // Data Length Code, the length of the data
 
-    if (BUFF_SIZE == Serial.readBytes(frame.data.u8, SETTING::Signal::BUFFER_LENGTH))
+    if (SETTING::Signal::BUFFER_LENGTH == Serial.readBytes(frame.data.u8, SETTING::Signal::BUFFER_LENGTH))
     {
         CAN_write_frame(&frame);
+        // static uint8_t buffer[3];
+        // static size_t bytesReceived = 0;
+
+        // while (Serial.available() > 0)
+        // {
+        //     buffer[bytesReceived] = Serial.read(); // Read a byte
+        //     bytesReceived++;
+
+        //     if (bytesReceived == sizeof(buffer))
+        //     {
+        // Once the buffer is full, process the data
+
+        // // !!! Placeholder used for testing, replace with proper handling of data !!!
+        // Serial.print("Received data: ");
+        // for (size_t i = 0; i < sizeof(buffer); i++)
+        // {
+        //     Serial.print(buffer[i], HEX);
+        //     Serial.print(" ");
+        // }
+        // Serial.println();
+        // // !!! End of placeholder !!!
+
+        // Reset the counter for the next set of data
+        // bytesReceived = 0;
+        // }
     }
 }

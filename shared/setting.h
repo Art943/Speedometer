@@ -3,7 +3,6 @@
 
 namespace Setting
 {
-
     namespace Signal
     {
         namespace Speed
