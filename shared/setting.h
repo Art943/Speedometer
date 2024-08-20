@@ -89,8 +89,6 @@ namespace Windowfixed
 constexpr int INTERVAL{40};
 constexpr int HEIGHT{560};
 constexpr int WIDTH{800};
-
-
 }
 }
 

@@ -56,17 +56,11 @@ add_executable(server
     desktop/server/src/comservice.cpp
     ${SERVER_SRC})
 
-target_include_directories(client PUBLIC desktop/client/include ${CMAKE_SOURCE_DIR}/shared)
-target_link_libraries(client PUBLIC Qt6::Core Qt6::Widgets Qt6::Multimedia)
 target_include_directories(server PUBLIC 
     ${CMAKE_SOURCE_DIR}/desktop/server/include 
     ${CMAKE_SOURCE_DIR}/shared)
 
-target_link_libraries(server PUBLIC Qt6::Core Qt6::Widgets ${SERVER_LIBS})
-
-add_executable(server desktop/server/main.cpp desktop/server/src/comservice.cpp desktop/server/src/tcpservice.cpp desktop/server/src/window.cpp)
-target_include_directories(server PUBLIC desktop/server/include ${CMAKE_SOURCE_DIR}/shared)
-target_link_libraries(server PUBLIC Qt6::Core Qt6::Widgets)
+target_link_libraries(server PUBLIC Qt6::Core Qt6::Widgets Qt6::Multimedia ${SERVER_LIBS})
 
 # Client
 add_executable(client 

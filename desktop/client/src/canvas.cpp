@@ -120,6 +120,7 @@ void Canvas::paintEvent(QPaintEvent *event)
     {
         batteryColor = Qt::green;
     }
+    
     painter.setPen(batteryColor);
     painter.drawText(650, 420, QChar(0xebdc));
     QRectF rectToFill(701, 402, 45, -batteryValue);
