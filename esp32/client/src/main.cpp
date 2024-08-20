@@ -12,7 +12,6 @@ void setup()
     delay(2000);
     Serial.begin(115200);
     // Serial.begin(SETTING::CAN::Baudrate);
-    Serial.println("Ready to receive data...");
 
     // Config the communication
     CAN_cfg.tx_pin_id = GPIO_NUM_5;
@@ -29,11 +28,6 @@ void loop()
 
     if (pdTRUE == xQueueReceive(CAN_cfg.rx_queue, &frame, portMAX_DELAY))
     {
-        if (frame.MsgID == MSG_ID)
-        {
-            Serial.write(frame.data.u8, frame.FIR.B.DLC);
-        }
+        Serial.write(frame.data.u8, frame.FIR.B.DLC);
     }
-
-    delay(10);
 }

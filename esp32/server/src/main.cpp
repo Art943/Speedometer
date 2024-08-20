@@ -12,7 +12,6 @@ void setup()
     delay(2000);
     Serial.begin(115200);
     // Serial.begin(SETTING::CAN::Baudrate);
-    Serial.println("Ready to send data...");
 
     // Config the communication
     CAN_cfg.tx_pin_id = GPIO_NUM_5;
@@ -25,11 +24,6 @@ void setup()
 
 void loop()
 {
-    while (!Serial.available())
-    {
-        ;
-    }
-
     CAN_frame_t frame{0};
 
     frame.MsgID = MSG_ID;           // The identifier of the receiver
