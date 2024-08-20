@@ -9,7 +9,6 @@ CAN_device_t CAN_cfg;
 
 void setup()
 {
-    delay(2000);
     Serial.begin(115200);
     // Serial.begin(SETTING::CAN::Baudrate);
 
@@ -35,5 +34,8 @@ void loop()
     if (3 == Serial.readBytes(frame.data.u8, 3))
     {
         CAN_write_frame(&frame);
+        for (int i = 0; i < 3; i++)
+            Serial.print(frame.data.u8[i], HEX);
+        Serial.println();
     }
 }

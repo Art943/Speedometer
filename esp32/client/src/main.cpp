@@ -9,7 +9,6 @@ CAN_device_t CAN_cfg;
 
 void setup()
 {
-    delay(2000);
     Serial.begin(115200);
     // Serial.begin(SETTING::CAN::Baudrate);
 
