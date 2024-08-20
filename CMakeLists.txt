@@ -7,6 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
+
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets Multimedia SerialPort)
 
 if (CMAKE_HOST_SYSTEM MATCHES Linux)
@@ -55,11 +56,17 @@ add_executable(server
     desktop/server/src/comservice.cpp
     ${SERVER_SRC})
 
+target_include_directories(client PUBLIC desktop/client/include ${CMAKE_SOURCE_DIR}/shared)
+target_link_libraries(client PUBLIC Qt6::Core Qt6::Widgets Qt6::Multimedia)
 target_include_directories(server PUBLIC 
     ${CMAKE_SOURCE_DIR}/desktop/server/include 
     ${CMAKE_SOURCE_DIR}/shared)
 
 target_link_libraries(server PUBLIC Qt6::Core Qt6::Widgets ${SERVER_LIBS})
+
+add_executable(server desktop/server/main.cpp desktop/server/src/comservice.cpp desktop/server/src/tcpservice.cpp desktop/server/src/window.cpp)
+target_include_directories(server PUBLIC desktop/server/include ${CMAKE_SOURCE_DIR}/shared)
+target_link_libraries(server PUBLIC Qt6::Core Qt6::Widgets)
 
 # Client
 add_executable(client 
