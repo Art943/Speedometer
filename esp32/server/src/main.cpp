@@ -9,14 +9,9 @@ CAN_device_t CAN_cfg;
 
 void setup()
 {
-<<<<<<< HEAD
     delay(2000);
     Serial.begin(SETTING::CAN::Baudrate);
     // Serial.begin(115200);
-=======
-    Serial.begin(115200);
-    // Serial.begin(SETTING::CAN::Baudrate);
->>>>>>> e3d840102eced838f4e792fc78e9de3007e9787b
 
     // Config the communication
     CAN_cfg.tx_pin_id = GPIO_NUM_5;
