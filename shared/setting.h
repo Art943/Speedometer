@@ -50,10 +50,17 @@ namespace Setting
     }
     namespace TCP
     {
-        constexpr int INTERVAL{40};
         constexpr int PORT{12345};
         const char *const IP{"127.0.0.1"};
     }
+namespace Windowfixed
+{
+constexpr int INTERVAL{40};
+constexpr int HEIGHT{560};
+constexpr int WIDTH{800};
+
+
+}
 }
 
 #endif
