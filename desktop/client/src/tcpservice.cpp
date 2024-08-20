@@ -2,6 +2,7 @@
 
 void TCPService::run(void)
 {
+    int socketID;
     sockaddr_in servaddr;
 
     // Assign IP and PORT
@@ -14,12 +15,12 @@ void TCPService::run(void)
         socketID = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
 
         // Connect to the server
-        if (0 != connect(socketID, (sockaddr *)&servaddr, sizeof(servaddr)))
+        if (0 != ::connect(socketID, (sockaddr *)&servaddr, sizeof(servaddr)))
         {
             close(socketID);
             socketID = -1;
             std::cout << "Trying to connect to server..." << std::endl;
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            QThread::sleep(1);
             continue;
         }
 
@@ -42,7 +43,7 @@ void TCPService::run(void)
                 memcpy(buffer, temp_buffer, Setting::Signal::BUFFER_LENGTH);
                 mtx.unlock();
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(20));
+                QThread::msleep(20);
             }
 
             close(socketID);
