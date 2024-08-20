@@ -25,6 +25,14 @@ void Canvas::setRightLightStatus(bool _RightLightstatus)
     RightLightstatus = _RightLightstatus;
 }
 
+Canvas::Canvas()
+{
+    turnSignalPlayer.setSource(QUrl::fromLocalFile("../desktop/client/res/turn-signals.wav"));
+    turnSignalPlayer.setAudioOutput(&audioOutput);
+    audioOutput.setVolume(1.0); // Set volume to your preference
+
+}
+
 void Canvas::paintEvent(QPaintEvent *event)
 {
 
@@ -163,9 +171,6 @@ void Canvas::paintEvent(QPaintEvent *event)
     bool signalActive = false;
     painter.setPen(Qt::green);
     painter.setFont(QFont("Material Icons", 80));
-    turnSignalPlayer.setSource(QUrl::fromLocalFile("../desktop/client/res/turn-signals.wav"));
-    turnSignalPlayer.setAudioOutput(&audioOutput);
-    audioOutput.setVolume(1.0); // Set volume to your preference
 
     if (count < 10)
     {

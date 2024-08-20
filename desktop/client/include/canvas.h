@@ -20,8 +20,9 @@ class Canvas : public QWidget
     QAudioOutput audioOutput;
 
 public:
-    void
-    setSpeedValue(int _speedValue);
+    Canvas();
+    
+    void setSpeedValue(int _speedValue);
     void setBatteryValue(int _batteryValue);
     void setTempValue(int _tempValue);
     void setConnection(bool _status);

@@ -31,8 +31,8 @@ void Window::refreshCanvas()
         canvas.setBatteryValue(0);
         canvas.setTempValue(0);
         canvas.setConnection(false);
-        canvas.setLeftLightStatus(true);
-        canvas.setRightLightStatus(true);
+        canvas.setLeftLightStatus(false);
+        canvas.setRightLightStatus(false);
     }
 
     canvas.update();
