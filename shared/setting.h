@@ -52,22 +52,15 @@ namespace Setting
     {
         namespace Server
         {
-            namespace MainWindow
-            {
-                const char *const Title{"Server"};
-                constexpr int FixWidth{600};
-                constexpr int FixHeight{125};
-            }
+            constexpr int FixWidth{600};
+            constexpr int FixHeight{125};
+        }
 
-            namespace CheckBox
-            {
-                const char *const Label{"Ligth Signals:"};
-                const char *const ButtonLeft{"Left"};
-                const char *const ButtonRight{"Right"};
-                const char *const ButtonWarning{"Warning"};
-                const char *const ButtonDeactivated{"color: gray;"};
-                const char *const ButtonReset{""};
-            }
+        namespace Client
+        {
+            constexpr int Interval{40};
+            constexpr int Height{560};
+            constexpr int Width{800};
         }
     }
 
@@ -84,14 +77,6 @@ namespace Setting
         const char *const IP{"127.0.0.1"};
 
     }
-namespace Windowfixed
-{
-constexpr int INTERVAL{40};
-constexpr int HEIGHT{560};
-constexpr int WIDTH{800};
-
-
-}
 }
 
 #endif
