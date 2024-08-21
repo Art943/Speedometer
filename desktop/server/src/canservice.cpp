@@ -16,7 +16,7 @@ void CANService::run(void)
     while (!serialPort.open(QIODevice::WriteOnly))
     {
         std::cout << "Trying to open Serial Port..." << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        QThread::sleep(1);
     }
 
     while (running)
@@ -36,7 +36,7 @@ void CANService::run(void)
         serialPort.waitForBytesWritten(100);
 
         // Allow other threads to run and give some time between iterations
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        QThread::msleep(20);
     }
 
     // Close the serial port
