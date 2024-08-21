@@ -176,8 +176,8 @@ void Canvas::paintEvent(QPaintEvent *event)
     {
         if (RightLightstatus && LeftLightstatus)
         {
-            painter.drawText(650, 140, QChar(0xe5c8)); // Left turn signal
-            painter.drawText(50, 140, QChar(0xe5c4));  // Right turn signal
+            painter.drawText(650, 140, QChar(0xe5c4)); // Left turn signal
+            painter.drawText(50, 140, QChar(0xe5c8));  // Right turn signal
             signalActive = true;
             count++;
         }
