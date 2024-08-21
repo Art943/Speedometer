@@ -5,8 +5,8 @@
 
 #include <atomic>
 #include <iostream>
-#include <QThread>
 #include <QSerialPort>
+#include <QThread>
 
 class CANService : public COMService, public QThread
 {

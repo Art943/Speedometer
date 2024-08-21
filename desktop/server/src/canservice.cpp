@@ -12,15 +12,20 @@ void CANService::run(void)
     serialPort.setStopBits(QSerialPort::OneStop);
     serialPort.setFlowControl(QSerialPort::NoFlowControl);
 
-    // Open the serial port
-    while (!serialPort.open(QIODevice::WriteOnly))
-    {
-        std::cout << "Trying to open Serial Port..." << std::endl;
-        QThread::sleep(1);
-    }
-
     while (running)
     {
+        // Open the serial port
+        if (!connectionStatus)
+        {
+            while (!serialPort.open(QIODevice::WriteOnly) && running)
+            {
+                std::cout << "Trying to open Serial Port..." << std::endl;
+                QThread::sleep(1);
+            }
+        }
+
+        connectionStatus = true;
+
         uint8_t temp_buffer[Setting::Signal::BUFFER_LENGTH];
 
         mtx.lock();
@@ -33,7 +38,11 @@ void CANService::run(void)
         serialPort.write(outgoingData);
 
         // Ensure all data is sent
-        serialPort.waitForBytesWritten(100);
+        if (!serialPort.waitForBytesWritten(100))
+        {
+            connectionStatus = false;
+            serialPort.close();
+        }
 
         // Allow other threads to run and give some time between iterations
         QThread::msleep(20);

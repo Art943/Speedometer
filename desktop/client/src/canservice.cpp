@@ -13,29 +13,41 @@ void CANService::run(void)
     serialPort.setFlowControl(QSerialPort::NoFlowControl);
 
     // Open the serial port
-    while (!serialPort.open(QIODevice::ReadOnly) && running)
-    {
-        QThread::sleep(1);
-    }
-
-    connectionStatus = true;
-
     while (running)
     {
-        uint8_t temp_buffer[Setting::Signal::BUFFER_LENGTH];
+        if (!connectionStatus)
+        {
+            // Open the serial port
+            while (!serialPort.open(QIODevice::ReadOnly) && running)
+            {
+                std::cout << "Attempting to connect..." << std::endl;
+                QThread::sleep(1);
+            }
+        }
+
+        uint8_t tempBuffer[Setting::Signal::BUFFER_LENGTH];
+        int bytesRead;
 
         // Wait for data to be available for reading
         if (serialPort.waitForReadyRead(100))
         {
+            connectionStatus = true;
+
             // Read the data from the serial port
-            QByteArray incomingData = serialPort.readAll();
+            bytesRead = serialPort.read(reinterpret_cast<char *>(tempBuffer), Setting::Signal::BUFFER_LENGTH);
 
-            // Process the received data
-            std::copy(incomingData.begin(), incomingData.end(), temp_buffer);
-
-            mtx.lock();
-            memcpy(buffer, temp_buffer, Setting::Signal::BUFFER_LENGTH);
-            mtx.unlock();
+            if (bytesRead == Setting::Signal::BUFFER_LENGTH)
+            {
+                mtx.lock();
+                memcpy(buffer, tempBuffer, Setting::Signal::BUFFER_LENGTH);
+                mtx.unlock();
+            }
+        }
+        else
+        {
+            // Close the serial port and mark the connection as lost
+            serialPort.close();
+            connectionStatus = false;
         }
 
         // Allow other threads to run
@@ -43,5 +55,8 @@ void CANService::run(void)
     }
 
     // Close the serial port
-    serialPort.close();
+    if (serialPort.isOpen())
+    {
+        serialPort.close();
+    }
 }
