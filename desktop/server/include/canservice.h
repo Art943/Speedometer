@@ -1,30 +1,26 @@
-#ifndef TCPCOM_H
-#define TCPCOM_H
+#ifndef CANCOM_H
+#define CANCOM_H
 
 #include "comservice.h"
 
-#include <cstring>
+#include <atomic>
 #include <iostream>
-#include <unistd.h>
 #include <QThread>
-#include <arpa/inet.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
+#include <QSerialPort>
 
-class TCPService : public COMService, public QThread
+class CANService : public COMService, public QThread
 {
     std::atomic<bool> running{true};
 
     void run(void) override;
 
 public:
-    TCPService()
+    CANService()
     {
         start();
     }
 
-    ~TCPService()
+    ~CANService()
     {
         running = false;
         connectionStatus = false;
