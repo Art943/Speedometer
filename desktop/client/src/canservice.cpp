@@ -23,7 +23,6 @@ void CANService::run(void)
                 std::cout << "Attempting to connect..." << std::endl;
                 QThread::sleep(1);
             }
-            connectionStatus = true;
         }
 
         uint8_t tempBuffer[Setting::Signal::BUFFER_LENGTH];
@@ -32,6 +31,8 @@ void CANService::run(void)
         // Wait for data to be available for reading
         if (serialPort.waitForReadyRead(100))
         {
+            connectionStatus = true;
+
             // Read the data from the serial port
             bytesRead = serialPort.read(reinterpret_cast<char *>(tempBuffer), Setting::Signal::BUFFER_LENGTH);
 
