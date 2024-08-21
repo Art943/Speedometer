@@ -5,22 +5,25 @@
 
 #include <atomic>
 #include <iostream>
-#include <thread>
+#include <QThread>
 #include <QSerialPort>
 
-class CANService : public COMService
+class CANService : public COMService, public QThread
 {
     std::atomic<bool> running{true};
-    std::thread thrd{&CANService::run, this};
 
     void run(void) override;
 
 public:
+    CANService()
+    {
+        start();
+    }
     ~CANService()
     {
         running = false;
         connectionStatus = false;
-        thrd.join();
+        wait();
     }
 };
 
