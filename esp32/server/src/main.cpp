@@ -3,15 +3,11 @@
 #include <CAN_config.h>
 #include "setting.h"
 
-constexpr int MSG_ID = 0x100;
-
 CAN_device_t CAN_cfg;
 
 void setup()
 {
-    delay(2000);
-    Serial.begin(SETTING::CAN::Baudrate);
-    // Serial.begin(115200);
+    Serial.begin(Setting::CAN::Baudrate);
 
     // Config the communication
     CAN_cfg.tx_pin_id = GPIO_NUM_5;
@@ -26,17 +22,12 @@ void loop()
 {
     CAN_frame_t frame{0};
 
-    frame.MsgID = MSG_ID;           // The identifier of the receiver
     frame.FIR.B.RTR = CAN_no_RTR;   // Remote transmition set to 0, means this is a data frame
     frame.FIR.B.FF = CAN_frame_std; // Indicates standard ll bits long frame
     frame.FIR.B.DLC = 3;            // SETTING::Signal::BUFFER_LENGTH; // Data Length Code, the length of the data
 
-    if (SETTING::Signal::BUFFER_LENGTH == Serial.readBytes(frame.data.u8, SETTING::Signal::BUFFER_LENGTH))
-    // if (3 == Serial.readBytes(frame.data.u8, 3))
+    if (Setting::Signal::BUFFER_LENGTH == Serial.readBytes(frame.data.u8, Setting::Signal::BUFFER_LENGTH))
     {
         CAN_write_frame(&frame);
-        for (int i = 0; i < 3; i++)
-            Serial.print(frame.data.u8[i], HEX);
-        Serial.println();
     }
 }

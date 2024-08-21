@@ -3,15 +3,11 @@
 #include <CAN_config.h>
 #include "setting.h"
 
-constexpr int MSG_ID = 0x100;
-
 CAN_device_t CAN_cfg;
 
 void setup()
 {
-    delay(2000);
-    Serial.begin(SETTING::CAN::Baudrate);
-    // Serial.begin(115200);
+    Serial.begin(Setting::CAN::Baudrate);
 
     // Config the communication
     CAN_cfg.tx_pin_id = GPIO_NUM_5;
