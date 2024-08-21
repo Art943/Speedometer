@@ -1,6 +1,4 @@
 #include "canvas.h"
-#include <QPainter>
-#include <QFont>
 
 void Canvas::setSpeedValue(int _speedValue)
 {
@@ -25,6 +23,14 @@ void Canvas::setLeftLightStatus(bool _LeftLightstatus)
 void Canvas::setRightLightStatus(bool _RightLightstatus)
 {
     RightLightstatus = _RightLightstatus;
+}
+
+Canvas::Canvas()
+{
+    turnSignalPlayer.setSource(QUrl::fromLocalFile("../desktop/client/res/turn-signals.wav"));
+    turnSignalPlayer.setAudioOutput(&audioOutput);
+    audioOutput.setVolume(1.0); // Set volume to your preference
+
 }
 
 void Canvas::paintEvent(QPaintEvent *event)
@@ -162,24 +168,31 @@ void Canvas::paintEvent(QPaintEvent *event)
     }
 
     // Turn signals
+    bool signalActive = false;
     painter.setPen(Qt::green);
     painter.setFont(QFont("Material Icons", 80));
+
     if (count < 10)
     {
         if (RightLightstatus && LeftLightstatus)
         {
             painter.drawText(650, 140, QChar(0xe5c8)); // Left turn signal
             painter.drawText(50, 140, QChar(0xe5c4));  // Right turn signal
+            signalActive = true;
             count++;
         }
         else if (RightLightstatus)
         {
-            painter.drawText(650, 140, QChar(0xe5c8)); // Right turn signal
+            painter.drawText(50, 140, QChar(0xe5c4)); // Right turn signal
+            signalActive = true;
+          
             count++;
         }
         else if (LeftLightstatus)
         {
-            painter.drawText(50, 140, QChar(0xe5c4)); // Left turn signal
+            painter.drawText(650, 140, QChar(0xe5c8)); // Left turn signal
+            signalActive = true;
+
             count++;
         }
     }
@@ -190,5 +203,21 @@ void Canvas::paintEvent(QPaintEvent *event)
     else
     {
         count = 0;
+    }
+    if (signalActive)
+    {
+        // Play sound only if it's not already playing
+        if (turnSignalPlayer.playbackState() != QMediaPlayer::PlayingState)
+        {
+            turnSignalPlayer.play();
+        }
+    }
+    else
+    {
+        // Stop sound when signals are inactive
+        if (turnSignalPlayer.playbackState() == QMediaPlayer::PlayingState)
+        {
+            turnSignalPlayer.stop();
+        }
     }
 }
