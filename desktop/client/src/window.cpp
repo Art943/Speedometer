@@ -4,14 +4,14 @@ Window::Window(COMService &com) : comservice(com)
 {
     layout.addWidget(&canvas, 0, 0);
     this->setLayout(&layout);
-    this->setFixedSize(800, 560);
+    this->setFixedSize(Setting::Windowfixed::WIDTH, Setting::Windowfixed::HEIGHT);
     layout.setContentsMargins(0, 0, 0, 0);
 
     // Connect the timer's timeout signal to the refreshCanvas slot
     connect(&timer, &QTimer::timeout, this, &Window::refreshCanvas);
 
     // Start the timer
-    timer.start(40);
+    timer.start(Setting::Windowfixed::INTERVAL);
 }
 
 void Window::refreshCanvas()

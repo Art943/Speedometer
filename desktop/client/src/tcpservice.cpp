@@ -14,7 +14,6 @@ void TCPService::run(void)
     {
         socketID = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
 
-        // Connect to the server
         if (0 != ::connect(socketID, (sockaddr *)&servaddr, sizeof(servaddr)))
         {
             close(socketID);
