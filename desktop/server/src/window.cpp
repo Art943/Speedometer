@@ -8,13 +8,13 @@ Window::Window(COMService &comservice_) : comservice(comservice_),
                                           gridLayout(this),
                                           speedLabel("Speed:", this),
                                           speedSlider(Qt::Horizontal, this),
-                                          currentSpeedLabel(QString::number(signal["Speed"].value.min) + QString(" Kph"), this),
+                                          currentSpeedLabel(QString::number(0 /*comservice.signal["Speed"].value.min*/) + QString(" Kph"), this),
                                           temperatureLabel("Temperature:", this),
                                           temperatureSlider(Qt::Horizontal, this),
                                           currentTemperatureLabel(QString::number(0) + QString(" °C")),
                                           batteryLabel("Battery Level:", this),
                                           batterySlider(Qt::Horizontal, this),
-                                          currentBatteryLabel(QString::number(signal["BatteryLevel"].value.min) + QString(" %"), this),
+                                          currentBatteryLabel(QString::number(0 /*comservice.signal["BatteryLevel"].value.min*/) + QString(" %"), this),
                                           lightSignalsLabel("Light Signals", this),
                                           leftLight("Left", this),
                                           rightLight("Right", this),
@@ -29,18 +29,18 @@ Window::Window(COMService &comservice_) : comservice(comservice_),
     setFixedHeight(Setting::Server::WindowHeight);
 
     // Speed Slider
-    speedSlider.setMinimum(signal["Speed"].value.min);
-    speedSlider.setMaximum(signal["Speed"].value.max);
+    speedSlider.setMinimum(comservice.signal["Speed"].min);
+    speedSlider.setMaximum(comservice.signal["Speed"].max);
     connect(&speedSlider, &QSlider::valueChanged, this, &Window::updateSpeedLabel);
 
     // Temperature Slider
-    temperatureSlider.setMinimum(signal["Temperature"].value.min);
-    temperatureSlider.setMaximum(signal["Temperature"].value.max);
+    temperatureSlider.setMinimum(comservice.signal["Temperature"].min);
+    temperatureSlider.setMaximum(comservice.signal["Temperature"].max);
     connect(&temperatureSlider, &QSlider::valueChanged, this, &Window::updateTemperatureLabel);
 
     // Battery Slider
-    batterySlider.setMinimum(signal["BatteryLevel"].value.min);
-    batterySlider.setMaximum(signal["BatteryLevel"].value.max);
+    batterySlider.setMinimum(comservice.signal["BatteryLevel"].min);
+    batterySlider.setMaximum(comservice.signal["BatteryLevel"].max);
     connect(&batterySlider, &QSlider::valueChanged, this, &Window::updateBatteryLabel);
 
     // Checkboxes

@@ -26,7 +26,7 @@ private:
 
 private:
     // Settings
-    Setting::Signal &signal = Setting::Signal::getInstance();
+    // Setting::Signal &signal = Setting::Signal::getInstance();
 
     // Layout
     QGridLayout gridLayout;

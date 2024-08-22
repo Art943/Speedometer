@@ -14,9 +14,8 @@ private:
     void insert(int start, int length, uint32_t value);
 
 protected:
-    uint8_t buffer[Setting::Signal::BUFFER_LENGTH];
+    uint8_t buffer[Setting::Signal::BUFFER_LENGTH]{};
     std::atomic<bool> connectionStatus{false};
-    Setting::Signal &signal = Setting::Signal::getInstance();
     std::mutex mtx;
 
     virtual void run(void) = 0;
@@ -33,6 +32,8 @@ public:
 
     void setLeftLightStatus(bool status);
     void setRightLightStatus(bool status);
+
+    Setting::Signal &signal = Setting::Signal::getInstance();
 };
 
 #endif

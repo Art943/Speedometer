@@ -16,7 +16,7 @@ private:
 
 protected:
     Setting::Signal &signal = Setting::Signal::getInstance();
-    uint8_t buffer[Setting::Signal::BUFFER_LENGTH];
+    uint8_t buffer[Setting::Signal::BUFFER_LENGTH]{};
     std::atomic<bool> connectionStatus{false};
     std::mutex mtx;
 
