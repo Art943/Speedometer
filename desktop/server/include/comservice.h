@@ -14,8 +14,9 @@ private:
     void insert(int start, int length, uint32_t value);
 
 protected:
-    uint8_t buffer[Setting::Signal::BUFFER_LENGTH]{0, 0, 0};
+    uint8_t buffer[Setting::Signal::BUFFER_LENGTH];
     std::atomic<bool> connectionStatus{false};
+    Setting::Signal &signal = Setting::Signal::getInstance();
     std::mutex mtx;
 
     virtual void run(void) = 0;

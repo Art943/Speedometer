@@ -25,6 +25,9 @@ private:
     void onWarningLightToggled(bool checked);
 
 private:
+    // Settings
+    Setting::Signal &signal = Setting::Signal::getInstance();
+
     // Layout
     QGridLayout gridLayout;
 
