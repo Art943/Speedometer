@@ -30,7 +30,6 @@ Canvas::Canvas()
     turnSignalPlayer.setSource(QUrl::fromLocalFile("../desktop/client/res/turn-signals.wav"));
     turnSignalPlayer.setAudioOutput(&audioOutput);
     audioOutput.setVolume(1.0); // Set volume to your preference
-
 }
 
 void Canvas::paintEvent(QPaintEvent *event)
@@ -120,8 +119,11 @@ void Canvas::paintEvent(QPaintEvent *event)
     {
         batteryColor = Qt::green;
     }
+
     painter.setPen(batteryColor);
     painter.drawText(650, 420, QChar(0xebdc));
+    QRectF batteryBackgroundRect(701, 402, 45, -100); // Full battery rectangle size
+    painter.fillRect(batteryBackgroundRect, QColor(64, 32, 60));
     QRectF rectToFill(701, 402, 45, -batteryValue);
     QColor fillColor(batteryColor);
     painter.fillRect(rectToFill, fillColor);
@@ -176,23 +178,21 @@ void Canvas::paintEvent(QPaintEvent *event)
     {
         if (RightLightstatus && LeftLightstatus)
         {
-            painter.drawText(50, 140, QChar(0xe5c4)); // Left turn signal
-            painter.drawText(650, 140, QChar(0xe5c8));  // Right turn signal
+            painter.drawText(50, 140, QChar(0xe5c4));  // Left turn signal
+            painter.drawText(650, 140, QChar(0xe5c8)); // Right turn signal
             signalActive = true;
             count++;
         }
         else if (RightLightstatus)
         {
-            painter.drawText(650, 140, QChar(0xe5c8)); // Right turn signal
+            painter.drawText(650, 140, QChar(0xe5c8)); // Left turn signal
             signalActive = true;
-          
             count++;
         }
         else if (LeftLightstatus)
         {
-            painter.drawText(50, 140, QChar(0xe5c4)); // Left turn signal
+            painter.drawText(50, 140, QChar(0xe5c4)); // Right turn signal
             signalActive = true;
-
             count++;
         }
     }

@@ -43,25 +43,25 @@ void COMService::insert(int start, int length, uint32_t value)
 void COMService::setSpeed(uint32_t speed)
 {
 
-    insert(Setting::Signal::Speed::Start, Setting::Signal::Speed::Length, speed);
+    insert(signal["Speed"].start, signal["Speed"].length, speed);
 }
 
 void COMService::setTemperature(int32_t temperature)
 {
-    insert(Setting::Signal::Temperature::Start, Setting::Signal::Temperature::Length, temperature);
+    insert(signal["Temperature"].start, signal["Temperature"].length, temperature);
 }
 
 void COMService::setBatteryLevel(uint32_t batteryLevel)
 {
-    insert(Setting::Signal::BatteryLevel::Start, Setting::Signal::BatteryLevel::Length, batteryLevel);
+    insert(signal["BatteryLevel"].start, signal["BatteryLevel"].length, batteryLevel);
 }
 
 void COMService::setLeftLightStatus(bool leftLight)
 {
-    insert(Setting::Signal::LeftLight::Start, Setting::Signal::LeftLight::Length, leftLight);
+    insert(signal["LeftLight"].start, signal["LeftLight"].length, leftLight);
 }
 
 void COMService::setRightLightStatus(bool rightLight)
 {
-    insert(Setting::Signal::RightLight::Start, Setting::Signal::RightLight::Length, rightLight);
+    insert(signal["RightLight"].start, signal["RightLight"].length, rightLight);
 }

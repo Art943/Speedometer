@@ -51,7 +51,7 @@ uint32_t COMService::getSpeed()
 {
     uint32_t speed{0};
 
-    extract(Setting::Signal::Speed::Start, Setting::Signal::Speed::Length, speed);
+    extract(signal["Speed"].start, signal["Speed"].length, speed);
 
     return speed;
 }
@@ -60,7 +60,7 @@ int32_t COMService::getTemperature()
 {
     int32_t temperature{0};
 
-    extract(Setting::Signal::Temperature::Start, Setting::Signal::Temperature::Length, temperature);
+    extract(signal["Temperature"].start, signal["Temperature"].length, temperature);
 
     return temperature;
 }
@@ -69,7 +69,7 @@ uint32_t COMService::getBatteryLevel()
 {
     uint32_t batteryLevel{0};
 
-    extract(Setting::Signal::BatteryLevel::Start, Setting::Signal::BatteryLevel::Length, batteryLevel);
+    extract(signal["BatteryLevel"].start, signal["BatteryLevel"].length, batteryLevel);
 
     return batteryLevel;
 }
@@ -78,7 +78,7 @@ bool COMService::getLeftLightStatus()
 {
     uint32_t leftLight{0};
 
-    extract(Setting::Signal::LeftLight::Start, Setting::Signal::LeftLight::Length, leftLight);
+    extract(signal["LeftLight"].start, signal["LeftLight"].length, leftLight);
 
     return leftLight;
 }
@@ -87,7 +87,7 @@ bool COMService::getRightLightStatus()
 {
     uint32_t rightLight{0};
 
-    extract(Setting::Signal::RightLight::Start, Setting::Signal::RightLight::Length, rightLight);
+    extract(signal["RightLight"].start, signal["RightLight"].length, rightLight);
 
     return rightLight;
 }

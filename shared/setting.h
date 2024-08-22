@@ -1,67 +1,97 @@
 #ifndef SETTING_H
 #define SETTING_H
 
+#include <map>
+#include <string>
+
 namespace Setting
 {
-    namespace Signal
+    struct signal_value
     {
-        namespace Speed
+        int min, max, start, length;
+        constexpr signal_value(int _min = 0, int _max = 0, int _start = 0, int _length = 0) : min{_min}, max{_max}, start{_start}, length{_length} {}
+    };
+
+    struct signal_type
+    {
+        const char *key;
+        signal_value value;
+        constexpr signal_type(const char *str = "", signal_value _value = 0) : key{str}, value{_value} {}
+    };
+
+    template <std::size_t N>
+    struct buffer
+    {
+        static constexpr std::size_t length(const signal_type *list)
         {
-            constexpr int Min{0};
-            constexpr int Max{240};
-            constexpr int Start{0};
-            constexpr int Length{8};
+            return (list[N - 1].value.length + buffer<N - 1>::length(list));
         }
 
-        namespace Temperature
+        static constexpr size_t size(const signal_type *list)
         {
-            constexpr int Min{-60};
-            constexpr int Max{60};
-            constexpr int Start{8};
-            constexpr int Length{7};
+            return (buffer<N>::length(list) / 8)
+                       ? buffer<N>::length(list) / 8
+                       : (buffer<N>::length(list) / 8 + 1);
+        }
+    };
+
+    template <>
+    struct buffer<1>
+    {
+        static constexpr std::size_t length(const signal_type *list)
+        {
+            return list[0].value.length;
+        }
+    };
+
+    class Signal
+    {
+    private:
+        static constexpr signal_type list[]{
+            {"Speed", {0, 240, 0, 8}},
+            {"Temperature", {-60, 60, 8, 7}},
+            {"BatteryLevel", {0, 100, 15, 7}},
+            {"LeftLight", {0, 1, 22, 1}},
+            {"RightLight", {0, 1, 23, 1}}};
+
+        std::map<std::string, signal_value> signal;
+
+        Signal()
+        {
+            for (const auto &elem : list)
+            {
+                signal.emplace(elem.key, elem.value);
+            }
         }
 
-        namespace BatteryLevel
+        Signal(Signal const &) = delete;
+        void operator=(Signal const &) = delete;
+
+    public:
+        static constexpr std::size_t BUFFER_LENGTH{((buffer<sizeof(list) / sizeof(list[0])>::size(list)))};
+
+        static Signal &getInstance()
         {
-            constexpr int Min{0};
-            constexpr int Max{100};
-            constexpr int Start{15};
-            constexpr int Length{7};
+            static Signal instance;
+            return instance;
         }
 
-        namespace LeftLight
+        signal_value operator[](const std::string &key) const
         {
-            constexpr int Min{0};
-            constexpr int Max{1};
-            constexpr int Start{22};
-            constexpr int Length{1};
+            return signal.at(key);
         }
+    };
 
-        namespace RightLight
-        {
-            constexpr int Min{0};
-            constexpr int Max{1};
-            constexpr int Start{23};
-            constexpr int Length{1};
-        }
-
-        constexpr int BUFFER_LENGTH{3};
+    namespace Client
+    {
+        constexpr int WindowHeight{560};
+        constexpr int WindowWidth{800};
     }
 
-    namespace Gui
+    namespace Server
     {
-        namespace Server
-        {
-            constexpr int FixWidth{600};
-            constexpr int FixHeight{125};
-        }
-
-        namespace Client
-        {
-            constexpr int Interval{40};
-            constexpr int Height{560};
-            constexpr int Width{800};
-        }
+        constexpr int WindowHeight{125};
+        constexpr int WindowWidth{800};
     }
 
     namespace CAN
@@ -75,8 +105,9 @@ namespace Setting
     {
         constexpr int PORT{12345};
         const char *const IP{"127.0.0.1"};
-
     }
+
+    int constexpr INTERVAL{40};
 }
 
 #endif
