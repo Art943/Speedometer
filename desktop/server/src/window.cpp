@@ -15,18 +15,18 @@ Window::Window(COMService &comservice_) : comservice(comservice_),
                                           batteryLabel("Battery Level:", this),
                                           batterySlider(Qt::Horizontal, this),
                                           currentBatteryLabel(QString::number(Setting::Signal::BatteryLevel::Min) + QString(" %"), this),
-                                          lightSignalsLabel(Setting::Gui::Server::CheckBox::Label, this),
-                                          leftLight(Setting::Gui::Server::CheckBox::ButtonLeft, this),
-                                          rightLight(Setting::Gui::Server::CheckBox::ButtonRight, this),
-                                          warningLight(Setting::Gui::Server::CheckBox::ButtonWarning, this)
+                                          lightSignalsLabel("Light Signals", this),
+                                          leftLight("Left", this),
+                                          rightLight("Right", this),
+                                          warningLight("Warning", this)
 {
 
     currentSpeedLabel.setFixedWidth(60); // Fixed width in order to avoid the resizing of the slider.
 
     // Main window title and fixed Width-Height
-    setWindowTitle(Setting::Gui::Server::MainWindow::Title);
-    setFixedWidth(Setting::Gui::Server::MainWindow::FixWidth);
-    setFixedHeight(Setting::Gui::Server::MainWindow::FixHeight);
+    setWindowTitle("Server");
+    setFixedWidth(Setting::Gui::Server::FixWidth);
+    setFixedHeight(Setting::Gui::Server::FixHeight);
 
     // Speed Slider
     speedSlider.setMinimum(Setting::Signal::Speed::Min);
@@ -109,12 +109,12 @@ void Window::onLeftLightToggled(bool checked) // LEFT
     if (checked)
     {
         rightLight.setEnabled(false);
-        rightLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated);
+        rightLight.setStyleSheet("color: gray;");
     }
     else
     {
         rightLight.setEnabled(true);
-        rightLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset);
+        rightLight.setStyleSheet("");
     }
 }
 
@@ -128,12 +128,12 @@ void Window::onRightLightToggled(bool checked) // RIGHT
     if (checked)
     {
         leftLight.setEnabled(false);
-        leftLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonDeactivated);
+        leftLight.setStyleSheet("color: gray;");
     }
     else
     {
         leftLight.setEnabled(true);
-        leftLight.setStyleSheet(Setting::Gui::Server::CheckBox::ButtonReset);
+        leftLight.setStyleSheet("");
     }
 }
 

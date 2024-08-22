@@ -1,43 +1,33 @@
+#include <CAN.h>
 #include <Arduino.h>
+#include <CAN_config.h>
+#include "setting.h"
+
+CAN_device_t CAN_cfg;
 
 void setup()
 {
-    Serial.begin(115200, SERIAL_8N1);
+    Serial.begin(Setting::CAN::Baudrate);
 
-    while (!Serial)
-    {
-        delay(10);
-    }
+    // Config the communication
+    CAN_cfg.tx_pin_id = GPIO_NUM_5;
+    CAN_cfg.rx_pin_id = GPIO_NUM_35;
+    CAN_cfg.speed = CAN_SPEED_500KBPS;
+    CAN_cfg.rx_queue = xQueueCreate(1, sizeof(CAN_frame_t));
 
-    Serial.println("Ready to recieve data...");
+    (void)CAN_init(); // initialize CAN Module
 }
 
 void loop()
 {
-    static uint8_t buffer[3];
-    static size_t bytesReceived = 0;
+    CAN_frame_t frame{0};
 
-    while (Serial.available() > 0)
+    frame.FIR.B.RTR = CAN_no_RTR;   // Remote transmition set to 0, means this is a data frame
+    frame.FIR.B.FF = CAN_frame_std; // Indicates standard ll bits long frame
+    frame.FIR.B.DLC = 3;            // SETTING::Signal::BUFFER_LENGTH; // Data Length Code, the length of the data
+
+    if (Setting::Signal::BUFFER_LENGTH == Serial.readBytes(frame.data.u8, Setting::Signal::BUFFER_LENGTH))
     {
-        buffer[bytesReceived] = Serial.read(); // Read a byte
-        bytesReceived++;
-
-        if (bytesReceived == sizeof(buffer))
-        {
-            // Once the buffer is full, process the data
-
-            // !!! Placeholder used for testing, replace with proper handling of data !!!
-            Serial.print("Received data: ");
-            for (size_t i = 0; i < sizeof(buffer); i++)
-            {
-                Serial.print(buffer[i], HEX);
-                Serial.print(" ");
-            }
-            Serial.println();
-            // !!! End of placeholder !!!
-
-            // Reset the counter for the next set of data
-            bytesReceived = 0;
-        }
+        CAN_write_frame(&frame);
     }
 }

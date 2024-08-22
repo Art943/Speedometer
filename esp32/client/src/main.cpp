@@ -1,32 +1,29 @@
+#include <CAN.h>
 #include <Arduino.h>
+#include <CAN_config.h>
+#include "setting.h"
+
+CAN_device_t CAN_cfg;
 
 void setup()
 {
-    Serial.begin(115200, SERIAL_8N1);
+    Serial.begin(Setting::CAN::Baudrate);
 
-    while (!Serial)
-    {
-        delay(10);
-    }
+    // Config the communication
+    CAN_cfg.tx_pin_id = GPIO_NUM_5;
+    CAN_cfg.rx_pin_id = GPIO_NUM_35;
+    CAN_cfg.speed = CAN_SPEED_500KBPS;
+    CAN_cfg.rx_queue = xQueueCreate(1, sizeof(CAN_frame_t));
 
-    Serial.println("Ready to send data...");
+    (void)CAN_init(); // initialize CAN Module
 }
 
 void loop()
 {
-    // Buffer to hold data
-    uint8_t buffer[3];
+    CAN_frame_t frame{0};
 
-    // !!! Test code to be removed and replaced with proper data handling !!!
-    for (size_t i = 0; i < sizeof(buffer); i++)
+    if (pdTRUE == xQueueReceive(CAN_cfg.rx_queue, &frame, portMAX_DELAY))
     {
-        buffer[i] = random(0, 256);
+        Serial.write(frame.data.u8, frame.FIR.B.DLC);
     }
-    // !!! End of test code !!!
-
-    // Send the data
-    Serial.write(buffer, sizeof(buffer));
-
-    // Wait before sending the next set of data
-    delay(20);
 }
